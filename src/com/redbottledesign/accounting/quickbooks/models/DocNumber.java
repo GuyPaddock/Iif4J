@@ -10,23 +10,26 @@ package com.redbottledesign.accounting.quickbooks.models;
  */
 public class DocNumber
 extends StringValue {
-    public static final DocNumber NULL = new DocNumber.Null();
+    /**
+     * The value to use when a {@link DocNumber} is not being provided.
+     */
+    public static final DocNumber NULL = new DocNumber();
 
-    public DocNumber(String name) {
-        super(name);
+    /**
+     * Constructor for a {@link DocNumber} to wrap the specified name.
+     *
+     * @param   value
+     *          The document number to wrap.
+     */
+    public DocNumber(String value) {
+        super(value);
     }
 
-    protected static class Null extends DocNumber {
-        public Null() {
-            super("");
-        }
-
-        public String getValue() {
-            return "";
-        }
-
-        protected void setValue(String value) {
-            // No-op
-        }
+    /**
+     * Private constructor used to instantiate the special {@link #NULL}
+     * sentinel value.
+     */
+    private DocNumber() {
+        super("", true);
     }
 }

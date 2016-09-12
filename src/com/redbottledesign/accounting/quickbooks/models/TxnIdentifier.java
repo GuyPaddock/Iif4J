@@ -10,23 +10,26 @@ package com.redbottledesign.accounting.quickbooks.models;
  */
 public class TxnIdentifier
 extends StringValue {
-    public static final TxnIdentifier NULL = new TxnIdentifier.Null();
+    /**
+     * The value to use when a {@link TxnIdentifier} is not being provided.
+     */
+    public static final TxnIdentifier NULL = new TxnIdentifier();
 
-    public TxnIdentifier(String name) {
-        super(name);
+    /**
+     * Constructor for a {@link TxnIdentifier} to wrap the specified identifier.
+     *
+     * @param   value
+     *          The identifier to wrap.
+     */
+    public TxnIdentifier(String value) {
+        super(value);
     }
 
-    protected static class Null extends TxnIdentifier {
-        public Null() {
-            super("");
-        }
-
-        public String getValue() {
-            return "";
-        }
-
-        protected void setValue(String value) {
-            // No-op
-        }
+    /**
+     * Private constructor used to instantiate the special {@link #NULL}
+     * sentinel value.
+     */
+    private TxnIdentifier() {
+        super("", true);
     }
 }

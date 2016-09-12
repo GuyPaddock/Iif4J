@@ -11,23 +11,26 @@ package com.redbottledesign.accounting.quickbooks.models;
  */
 public class TxnClass
 extends StringValue {
-    public static final TxnClass NULL = new TxnClass.Null();
+    /**
+     * The value to use when a {@link TxnClass} is not being provided.
+     */
+    public static final TxnClass NULL = new TxnClass();
 
-    public TxnClass(String name) {
-        super(name);
+    /**
+     * Constructor for a {@link TxnClass} to wrap the specified class.
+     *
+     * @param   value
+     *          The class to wrap.
+     */
+    public TxnClass(String value) {
+        super(value);
     }
 
-    protected static class Null extends TxnClass {
-        public Null() {
-            super("");
-        }
-
-        public String getValue() {
-            return "";
-        }
-
-        protected void setValue(String value) {
-            // No-op
-        }
+    /**
+     * Private constructor used to instantiate the special {@link #NULL}
+     * sentinel value.
+     */
+    private TxnClass() {
+        super("", true);
     }
 }

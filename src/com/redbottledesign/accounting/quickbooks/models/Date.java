@@ -14,24 +14,54 @@ import java.time.format.DateTimeFormatter;
  */
 public class Date
 implements IifExportable {
+    /**
+     * The QuickBooks date format ({@code M/d/YYYY}).
+     */
     public static final DateTimeFormatter DATE_FORMAT =
         DateTimeFormatter.ofPattern("M/d/yyyy");
 
+    /**
+     * The plain date wrapped by this object.
+     */
     private LocalDate plainDate;
 
+    /**
+     * Constructor for {@link Date}, from an existing local date object.
+     *
+     * @param   plainDate
+     *          The "plain" {@link LocalDate} to be wrapped by the new object.
+     */
     public Date(LocalDate plainDate) {
         this.setPlainDate(plainDate);
     }
 
+    /**
+     * Constructor for {@link Date}, from a {@link String} in {@code M/d/YYYY}
+     * format.
+     *
+     * @param   dateString
+     *          The date to parse and wrap in thew new instance.
+     */
     public Date(String dateString) throws ParseException {
         this.setPlainDate(LocalDate.parse(dateString, DATE_FORMAT));
     }
 
+    /**
+     * Gets the "plain" date this object wraps.
+     *
+     * @return  The date being wrapped.
+     */
     public LocalDate getPlainDate() {
         return this.plainDate;
     }
 
-    public void setPlainDate(LocalDate plainDate) {
+    /**
+     * Sets the "plain" date this object wraps.
+     *
+     * @param   plainDate
+     *          The new date to wrap.
+     */
+    protected void setPlainDate(LocalDate plainDate) {
         if (plainDate == null) {
             throw new IllegalArgumentException("plainDate cannot be null");
         }
@@ -39,6 +69,12 @@ implements IifExportable {
         this.plainDate = plainDate;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return  The date, as a {@link String} returned by {@link #toString()}.
+     */
+    @Override
     public String toIifString() {
         return IifUtils.escapeColumn(this.toString());
     }

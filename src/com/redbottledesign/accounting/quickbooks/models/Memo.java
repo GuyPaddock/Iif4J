@@ -8,23 +8,26 @@ package com.redbottledesign.accounting.quickbooks.models;
  */
 public class Memo
 extends StringValue {
-    public static final Memo NULL = new Memo.Null();
+    /**
+     * The value to use when a {@link Memo} is not being provided.
+     */
+    public static final Memo NULL = new Memo();
 
+    /**
+     * Constructor for a {@link Memo} to wrap the specified text.
+     *
+     * @param   value
+     *          The memo text to wrap.
+     */
     public Memo(String value) {
         super(value);
     }
 
-    protected static class Null extends Memo {
-        public Null() {
-            super("");
-        }
-
-        public String getValue() {
-            return "";
-        }
-
-        protected void setValue(String value) {
-            // No-op
-        }
+    /**
+     * Private constructor used to instantiate the special {@link #NULL}
+     * sentinel value.
+     */
+    private Memo() {
+        super("", true);
     }
 }

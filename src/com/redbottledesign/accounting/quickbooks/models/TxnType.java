@@ -10,29 +10,60 @@ import com.redbottledesign.accounting.quickbooks.util.IifUtils;
  */
 public class TxnType
 implements IifExportable {
-    private Type type;
+    /**
+     * The type of the transaction, wrapped in this object.
+     */
+    private Type value;
 
-    public TxnType(final Type type) {
-        this.setType(type);
+    /**
+     * Constructor for {@link TxnType}.
+     *
+     * @param   value
+     *          The transaction type being wrapped.
+     */
+    public TxnType(final Type value) {
+        this.setValue(value);
     }
 
-    public Type getType() {
-        return this.type;
+    /**
+     * Gets the type of transaction.
+     *
+     * @return  The transaction type.
+     */
+    public Type getValue() {
+        return this.value;
     }
 
-    protected void setType(final Type type) {
+    /**
+     * Sets the type of transaction.
+     *
+     * @param   type
+     *          The new transaction type.
+     */
+    protected void setValue(final Type type) {
         if (type == null) {
-            throw new IllegalArgumentException("type cannot be null");
+            throw new IllegalArgumentException("value cannot be null");
         }
 
-        this.type = type;
+        this.value = type;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The string value is automatically escaped and wrapped in quotes.</p>
+     *
+     * @return  The value of this object, in a format acceptable for IIF.
+     */
     @Override
     public String toIifString() {
-        return IifUtils.escapeColumn(this.getType().getQbIdentifier());
+        return IifUtils.escapeColumn(this.getValue().getQbIdentifier());
     }
 
+    /**
+     * An enumeration of the types of transaction types that QuickBooks
+     * supports.
+     */
     public enum Type {
         /**
          * Transactions that create a beginning balance in a balance sheet
@@ -115,12 +146,27 @@ implements IifExportable {
          */
         TRANSFER("TRANSFER");
 
+        /**
+         * The internal identifier for this option in QuickBooks.
+         */
         private final String qbIdentifier;
 
-        Type(String qbIdentifer) {
-            this.qbIdentifier = qbIdentifer;
+        /**
+         * Private, enum constrcutor for @{link Type}
+         *
+         * @param   qbIdentifier
+         *          The identifier for this type in QuickBooks.
+         */
+        Type(String qbIdentifier) {
+            this.qbIdentifier = qbIdentifier;
         }
 
+        /**
+         * Gets the unique identifier for this type of transaction.
+         *
+         * @return  String
+         *          The QuickBooks code for this transaction type.
+         */
         public String getQbIdentifier() {
             return this.qbIdentifier;
         }

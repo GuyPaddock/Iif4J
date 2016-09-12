@@ -6,6 +6,9 @@ import com.redbottledesign.accounting.quickbooks.models.*;
 import java.time.LocalDate;
 
 /**
+ * An example of building a general journal entry containing three lines and
+ * then exporting it to IIF format.
+ *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
 public class GeneralJournalExample {
@@ -48,7 +51,7 @@ public class GeneralJournalExample {
         line3.setDate(date);
         line3.setAccount(rbdSalesCons);
         line3.setName(contoso);
-        line2.setTxnClass(jimClass);
+        line3.setTxnClass(jimClass);
         line3.setAmount(new Amount(-1860));
         line3.setDocNumber(docNumber);
         line3.setMemo(
@@ -72,12 +75,19 @@ public class GeneralJournalExample {
         System.out.println(file.toIifString());
     }
 
+    /**
+     * Prints a simple summary of the state of the transaction, for debugging
+     * purposes.
+     *
+     * @param   transaction
+     *          The transaction being summarized.
+     */
     protected static void printSummary(Transaction transaction) {
         System.out.println("Lines: "       + transaction.getLines().size());
         System.out.println("In balance? "  + transaction.isInBalance());
-        System.out.println("Discrepancy: " + transaction.getBalanceDiscrepancy());
-        System.out.println("Debits: "      + transaction.getDebitTotal());
-        System.out.println("Credits: "     + transaction.getCreditTotal());
+        System.out.println("Discrepancy: " + transaction.calculateBalanceDiscrepancy());
+        System.out.println("Debits: "      + transaction.calculateDebitTotal());
+        System.out.println("Credits: "     + transaction.calculateCreditTotal());
         System.out.println();
     }
 }
