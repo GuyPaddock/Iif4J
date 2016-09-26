@@ -16,6 +16,7 @@
  */
 package com.redbottledesign.accounting.quickbooks.models;
 
+import com.redbottledesign.accounting.TransactionEffect;
 import com.redbottledesign.accounting.quickbooks.iif.CompositeExportable;
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.iif.TransactionTerminationLine;
@@ -118,7 +119,7 @@ implements Cloneable {
      * @return  The total amount of debits in this transaction.
      */
     public BigDecimal calculateDebitTotal() {
-        return this.calculateTotal(TotalType.DEBIT);
+        return this.calculateTotal(TransactionEffect.DEBIT);
     }
 
     /**
@@ -127,7 +128,7 @@ implements Cloneable {
      * @return  The total amount of debits in this transaction.
      */
     public BigDecimal calculateCreditTotal() {
-        return this.calculateTotal(TotalType.CREDIT);
+        return this.calculateTotal(TransactionEffect.CREDIT);
     }
 
     /**
@@ -155,7 +156,7 @@ implements Cloneable {
      * @return  The sum of all transaction lines of the specified type.
      *          (This is always a positive number, or zero).
      */
-    protected BigDecimal calculateTotal(TotalType type) {
+    protected BigDecimal calculateTotal(TransactionEffect type) {
         BigDecimal sum;
 
         sum = this.getLines()
@@ -181,48 +182,5 @@ implements Cloneable {
         result.add(new TransactionTerminationLine());
 
         return result;
-    }
-
-    /**
-     * An enumeration of the types of totals that can be calculated from the
-     * transaction.
-     */
-    protected enum TotalType {
-        /**
-         * Money posted to the transaction from another account.
-         */
-        DEBIT(1),
-
-        /**
-         * Money disbursed from the transaction into another account.
-         */
-        CREDIT(-1);
-
-        /**
-         * The {@link BigDecimal} sign number that corresponds to this type of
-         * total.
-         */
-        private final int signNumber;
-
-        /**
-         * Enumeration constructor for {@link TotalType}.
-         *
-         * @param   signNumber
-         *          The {@link BigDecimal} sign number that corresponds to this
-         *          type of total.
-         */
-        TotalType(final int signNumber) {
-            this.signNumber = signNumber;
-        }
-
-        /**
-         * Gets the {@link BigDecimal} sign number that corresponds to this type
-         * of total.
-         *
-         * @return  The sign number for this type of total.
-         */
-        public int getSignNumber() {
-            return this.signNumber;
-        }
     }
 }
