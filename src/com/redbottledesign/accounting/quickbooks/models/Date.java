@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ implements IifExportable {
     private LocalDate plainDate;
 
     /**
-     * Constructor for {@link Date}, from an existing local date object.
+     * Constructor for {@code Date}, from an existing local date object.
      *
      * @param   plainDate
      *          The "plain" {@link LocalDate} to be wrapped by the new object.
@@ -52,7 +52,7 @@ implements IifExportable {
     }
 
     /**
-     * Constructor for {@link Date}, from a {@link String} in {@code M/d/YYYY}
+     * Constructor for {@code Date}, from a {@link String} in {@code M/d/YYYY}
      * format.
      *
      * @param   dateString

@@ -1,19 +1,5 @@
-package com.redbottledesign.accounting.quickbooks.models;
-
-import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
-
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-
-/**
- * A representation of a monetary value in a transaction.
- *
- * Amounts are limited to two decimal places, in USD.
- *
- * @author Guy Paddock (guy@redbottledesign.com)
- */
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +14,20 @@ import java.text.NumberFormat;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.redbottledesign.accounting.quickbooks.models;
+
+import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+
+/**
+ * A representation of a monetary value in a transaction.
+ *
+ * Amounts are limited to two decimal places, in USD.
+ *
+ * @author Guy Paddock (guy@redbottledesign.com)
+ */
 public class Amount
 implements IifExportable {
     /**
@@ -36,7 +36,7 @@ implements IifExportable {
     private BigDecimal value;
 
     /**
-     * Constructor for {@link Amount}.
+     * Constructor for {@code Amount}.
      *
      * @param   value
      *          The value of the new amount, as a {@link Double}.
@@ -46,7 +46,7 @@ implements IifExportable {
     }
 
     /**
-     * Constructor for {@link Amount}.
+     * Constructor for {@code Amount}.
      *
      * @param   value
      *          The value of the new amount, as a {@link BigDecimal}.
@@ -93,7 +93,7 @@ implements IifExportable {
      * Gets this amount as a string, in format "XXXX.XX" (two decimal places, no
      * grouping characters).
      *
-     * @return  The value of this amount as a {@link String}.
+     * @return The value of this amount as a {@link String}.
      */
     @Override
     public String toString() {

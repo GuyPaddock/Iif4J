@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ package com.redbottledesign.accounting.quickbooks.models;
 public class Account
 extends StringValue {
     /**
-     * Constructor for {@link Account} that wraps an account having the
+     * Constructor for {@code Account} that wraps an account having the
      * specified name.
      *
      * @param   name

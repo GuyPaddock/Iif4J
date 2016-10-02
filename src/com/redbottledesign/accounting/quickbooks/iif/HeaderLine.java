@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ implements IifExportable {
     private Type type;
 
     /**
-     * Constructor for {@link HeaderLine}.
+     * Constructor for {@code HeaderLine}.
      *
      * @param   type
      *          The type of header line.
@@ -96,7 +96,7 @@ implements IifExportable {
         private final List<String> columns;
 
         /**
-         * Enum constructor for {@link Type}.
+         * Enum constructor for {@code Type}.
          *
          * @param   columns
          *          The values for each of the columns in this type of header

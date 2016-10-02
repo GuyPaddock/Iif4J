@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,10 @@ extends StringValue {
     /**
      * The value to use when a {@link DocNumber} is not being provided.
      */
-    public static final DocNumber NULL = new DocNumber();
+    public static final DocNumber EMPTY = new DocNumber();
 
     /**
-     * Constructor for a {@link DocNumber} to wrap the specified name.
+     * Constructor for a {@code DocNumber} to wrap the specified name.
      *
      * @param   value
      *          The document number to wrap.
@@ -42,7 +42,7 @@ extends StringValue {
     }
 
     /**
-     * Private constructor used to instantiate the special {@link #NULL}
+     * Private constructor used to instantiate the special {@link #EMPTY}
      * sentinel value.
      */
     private DocNumber() {

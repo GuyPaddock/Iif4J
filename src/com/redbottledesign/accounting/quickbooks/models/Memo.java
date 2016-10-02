@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@ extends StringValue {
     /**
      * The value to use when a {@link Memo} is not being provided.
      */
-    public static final Memo NULL = new Memo();
+    public static final Memo EMPTY = new Memo();
 
     /**
-     * Constructor for a {@link Memo} to wrap the specified text.
+     * Constructor for a {@code Memo} to wrap the specified text.
      *
      * @param   value
      *          The memo text to wrap.
@@ -40,7 +40,7 @@ extends StringValue {
     }
 
     /**
-     * Private constructor used to instantiate the special {@link #NULL}
+     * Private constructor used to instantiate the special {@link #EMPTY}
      * sentinel value.
      */
     private Memo() {

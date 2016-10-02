@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ extends StringValue {
     public static final TxnClass NULL = new TxnClass();
 
     /**
-     * Constructor for a {@link TxnClass} to wrap the specified class.
+     * Constructor for a {@code TxnClass} to wrap the specified class.
      *
      * @param   value
      *          The class to wrap.

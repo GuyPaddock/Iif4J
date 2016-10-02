@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 package com.redbottledesign.accounting.quickbooks.util;
 
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
+import com.redbottledesign.util.Argument;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -109,17 +110,9 @@ public class IifUtils {
     public static String exportToString(final String[] prefixColumns, final IifExportable[] columns, final String[] suffixColumns) {
         final List<String> line = new LinkedList<>();
 
-        if (columns == null) {
-            throw new IllegalArgumentException("columns must not be null");
-        }
-
-        if (prefixColumns == null) {
-            throw new IllegalArgumentException("prefixColumns must not be null");
-        }
-
-        if (suffixColumns == null) {
-            throw new IllegalArgumentException("suffixColumns must not be null");
-        }
+        Argument.ensureNotNull(prefixColumns, "prefixColumns");
+        Argument.ensureNotNull(columns, "columns");
+        Argument.ensureNotNull(suffixColumns, "suffixColumns");
 
         line.addAll(Arrays.asList(prefixColumns));
 
@@ -153,6 +146,8 @@ public class IifUtils {
      * @return  The value, with all leading and trailing double quotes removed.
      */
     public static String stripQuotes(String value) {
+        Argument.ensureNotNull(value, "value");
+
         return value.replaceAll("^\"|\"$", "");
     }
 

@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ implements Cloneable {
     private List<DataLine> lines;
 
     /**
-     * Default constructor for {@link Transaction}.
+     * Default constructor for {@code Transaction}.
      */
     public Transaction() {
         this.setLines(Collections.emptyList());
@@ -132,9 +132,9 @@ implements Cloneable {
     }
 
     /**
-     * Creates a shallow copy of this {@link Transaction}.
+     * Creates a shallow copy of this {@code Transaction}.
      *
-     * @return  A new {@link Transaction}, having all of the same field values
+     * @return  A new {@code Transaction}, having all of the same field values
      *          and references as this instance.
      */
     @Override

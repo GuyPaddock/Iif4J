@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,14 @@ extends CompositeExportable {
     private List<IifExportable> exportables;
 
     /**
-     * Default constructor for {@link CompositeExportableList}.
+     * Default constructor for {@code CompositeExportableList}.
      */
     protected CompositeExportableList() {
         this(Collections.emptyList());
     }
 
     /**
-     * Constructor for {@link CompositeExportableList} that initializes the
+     * Constructor for {@code CompositeExportableList} that initializes the
      * new composite to contain the provided list of
      * {@link IifExportable} objects.
      *

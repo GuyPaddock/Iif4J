@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2016  Red Bottle Design, LLC
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ package com.redbottledesign.accounting.quickbooks.models;
 
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
+import com.redbottledesign.util.Argument;
 
 /**
  * The abstract representation of a single data line in a QuickBooks IIF file.
@@ -75,14 +76,14 @@ implements IifExportable, Cloneable {
     private Memo memo;
 
     /**
-     * Default constructor for {@link DataLine}.
+     * Default constructor for {@code DataLine}.
      */
     public DataLine() {
-        this.setId(TxnIdentifier.NULL);
+        this.setId(TxnIdentifier.EMPTY);
         this.setTxnClass(TxnClass.NULL);
-        this.setName(Name.NULL);
-        this.setDocNumber(DocNumber.NULL);
-        this.setMemo(Memo.NULL);
+        this.setName(Name.EMPTY);
+        this.setDocNumber(DocNumber.EMPTY);
+        this.setMemo(Memo.EMPTY);
     }
 
     /**
@@ -107,7 +108,7 @@ implements IifExportable, Cloneable {
      *          The new unique ID of the transaction.
      */
     public void setId(final TxnIdentifier id) {
-        this.ensureNotNull(id, "id");
+        Argument.ensureNotNull(id, "id");
         this.id = id;
     }
 
@@ -133,7 +134,7 @@ implements IifExportable, Cloneable {
      *          The type of the transaction.
      */
     public void setType(final TxnType type) {
-        this.ensureNotNull(type, "type");
+        Argument.ensureNotNull(type, "type");
         this.type = type;
     }
 
@@ -159,7 +160,7 @@ implements IifExportable, Cloneable {
      *          The new transaction date.
      */
     public void setDate(final Date date) {
-        this.ensureNotNull(date, "date");
+        Argument.ensureNotNull(date, "date");
         this.date = date;
     }
 
@@ -181,7 +182,7 @@ implements IifExportable, Cloneable {
      *          The new account affected by this line.
      */
     public void setAccount(final Account account) {
-        this.ensureNotNull(account, "account");
+        Argument.ensureNotNull(account, "account");
         this.account = account;
     }
 
@@ -202,7 +203,7 @@ implements IifExportable, Cloneable {
      *          The new name associated with this transaction line.
      */
     public void setName(final Name name) {
-        this.ensureNotNull(name, "name");
+        Argument.ensureNotNull(name, "name");
         this.name = name;
     }
 
@@ -222,7 +223,7 @@ implements IifExportable, Cloneable {
      *          The new class for this line.
      */
     public void setTxnClass(final TxnClass txnClass) {
-        this.ensureNotNull(txnClass, "txnClass");
+        Argument.ensureNotNull(txnClass, "txnClass");
         this.txnClass = txnClass;
     }
 
@@ -248,7 +249,7 @@ implements IifExportable, Cloneable {
      *          The new amount of this transaction line.
      */
     public void setAmount(final Amount amount) {
-        this.ensureNotNull(amount, "amount");
+        Argument.ensureNotNull(amount, "amount");
         this.amount = amount;
     }
 
@@ -276,7 +277,7 @@ implements IifExportable, Cloneable {
      *          The new document number for the transaction.
      */
     public void setDocNumber(final DocNumber docNumber) {
-        this.ensureNotNull(docNumber, "docNumber");
+        Argument.ensureNotNull(docNumber, "docNumber");
         this.docNumber = docNumber;
     }
 
@@ -296,7 +297,7 @@ implements IifExportable, Cloneable {
      *          The new memo for this transaction line.
      */
     public void setMemo(final Memo memo) {
-        this.ensureNotNull(memo, "memo");
+        Argument.ensureNotNull(memo, "memo");
         this.memo = memo;
     }
 
@@ -310,9 +311,9 @@ implements IifExportable, Cloneable {
     public abstract String getLineType();
 
     /**
-     * Creates a shallow copy of this {@link DataLine}.
+     * Creates a shallow copy of this {@code DataLine}.
      *
-     * @return  A new {@link DataLine}, having all of the same field values and
+     * @return  A new {@code DataLine}, having all of the same field values and
      *          references as this instance.
      */
     @Override
@@ -349,22 +350,5 @@ implements IifExportable, Cloneable {
         return IifUtils.exportToString(
             new String[] { this.getLineType() },
             columns);
-    }
-
-    /**
-     * Internal convenience method for argument checking.
-     *
-     * TODO: Move to a name-brand common library method for this instead.
-     *
-     * @param   value
-     *          The value to ensure is not null.
-     *
-     * @param   name
-     *          The name of the argument in code, for error messaging.
-     */
-    protected void ensureNotNull(Object value, String name) {
-        if (value == null) {
-            throw new IllegalArgumentException(name + " cannot be null.");
-        }
     }
 }
