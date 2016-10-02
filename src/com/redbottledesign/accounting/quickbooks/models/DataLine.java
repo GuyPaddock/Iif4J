@@ -80,7 +80,7 @@ implements IifExportable, Cloneable {
      */
     public DataLine() {
         this.setId(TxnIdentifier.EMPTY);
-        this.setTxnClass(TxnClass.NULL);
+        this.setTxnClass(TxnClass.EMPTY);
         this.setName(Name.EMPTY);
         this.setDocNumber(DocNumber.EMPTY);
         this.setMemo(Memo.EMPTY);

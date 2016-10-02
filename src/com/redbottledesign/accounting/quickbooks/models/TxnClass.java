@@ -30,7 +30,7 @@ extends StringValue {
     /**
      * The value to use when a {@link TxnClass} is not being provided.
      */
-    public static final TxnClass NULL = new TxnClass();
+    public static final TxnClass EMPTY = new TxnClass();
 
     /**
      * Constructor for a {@code TxnClass} to wrap the specified class.
@@ -43,7 +43,7 @@ extends StringValue {
     }
 
     /**
-     * Private constructor used to instantiate the special {@link #NULL}
+     * Private constructor used to instantiate the special {@link #EMPTY}
      * sentinel value.
      */
     private TxnClass() {
