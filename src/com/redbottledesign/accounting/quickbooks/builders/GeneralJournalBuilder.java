@@ -18,8 +18,8 @@ public class GeneralJournalBuilder {
      */
     public static final TxnType TRANSACTION_TYPE = TxnType.GENERAL_JOURNAL;
 
-    private DocNumber entryNumber;
     private Date date;
+    private DocNumber entryNumber;
     private List<DataLine> journalLines;
 
     /**
@@ -27,22 +27,6 @@ public class GeneralJournalBuilder {
      */
     public GeneralJournalBuilder() {
         this.journalLines = new LinkedList<>();
-    }
-
-    /**
-     * Sets the unique entry number for the journal entry.
-     *
-     * <p>This populates the document number of the IIF transaction.</p>
-     *
-     * @param   entryNumber
-     *          The entry number to set in the transaction being built.
-     *
-     * @return  This object, for chaining.
-     */
-    public GeneralJournalBuilder setEntryNumber(final DocNumber entryNumber) {
-        this.entryNumber = entryNumber;
-
-        return this;
     }
 
     /**
@@ -57,6 +41,22 @@ public class GeneralJournalBuilder {
      */
     public GeneralJournalBuilder setDate(final Date date) {
         this.date = date;
+
+        return this;
+    }
+
+    /**
+     * Sets the unique entry number for the journal entry.
+     *
+     * <p>This populates the document number of the IIF transaction.</p>
+     *
+     * @param   entryNumber
+     *          The entry number to set in the transaction being built.
+     *
+     * @return  This object, for chaining.
+     */
+    public GeneralJournalBuilder setEntryNumber(final DocNumber entryNumber) {
+        this.entryNumber = entryNumber;
 
         return this;
     }
@@ -223,21 +223,21 @@ public class GeneralJournalBuilder {
     }
 
     /**
-     * Gets the unique entry number for the journal entry.
-     *
-     * @return  The entry number.
-     */
-    protected DocNumber getEntryNumber() {
-        return this.entryNumber;
-    }
-
-    /**
      * Gets the effective date of the journal entry.
      *
      * @return  The date.
      */
     protected Date getDate() {
         return this.date;
+    }
+
+    /**
+     * Gets the unique entry number for the journal entry.
+     *
+     * @return  The entry number.
+     */
+    protected DocNumber getEntryNumber() {
+        return this.entryNumber;
     }
 
     /**
