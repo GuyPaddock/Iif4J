@@ -101,7 +101,11 @@ public abstract class Argument {
     throws IllegalStateException {
         if ((currentValue != 0) && (currentValue != newValue)) {
             throw new IllegalStateException(
-                "The " + name + " can only be set once (already set to `" + currentValue + "`).");
+                String.format(
+                    "The %s can only be set once (already set to `%s`; was trying to set to `%s`).",
+                    name,
+                    currentValue,
+                    newValue));
         }
     }
 
@@ -121,12 +125,70 @@ public abstract class Argument {
      * @throws  IllegalStateException
      *          If the field is already set to a different value.
      */
+    public static void ensureUnset(double currentValue, double newValue, String name)
+    throws IllegalStateException {
+        if ((currentValue != 0) && (currentValue != newValue)) {
+            throw new IllegalStateException(
+                String.format(
+                    "The %s can only be set once (already set to `%s`; was trying to set to `%s`).",
+                    name,
+                    currentValue,
+                    newValue));
+        }
+    }
+
+    /**
+     * Ensures that either the current value is not yet set, or that it matches
+     * the provided new value.
+     *
+     * @param   currentValue
+     *          The current value of the field.
+     *
+     * @param   newValue
+     *          The proposed new value for the field.
+     *
+     * @param   name
+     *          The human-friendly name for the field (for error messages).
+     *
+     * @throws  IllegalStateException
+     *          If the field is already set to a different value.
+     */
+    public static void ensureUnset(float currentValue, float newValue, String name)
+    throws IllegalStateException {
+        if ((currentValue != 0) && (currentValue != newValue)) {
+            throw new IllegalStateException(
+                String.format(
+                    "The %s can only be set once (already set to `%s`; was trying to set to `%s`).",
+                    name,
+                    currentValue,
+                    newValue));
+        }
+    }
+
+    /**
+     * Ensures that either the current value is not yet set, an empty
+     * collection, or the same collection as the provided new value.
+     *
+     * @param   currentValue
+     *          The current value of the field.
+     *
+     * @param   newValue
+     *          The proposed new value for the field.
+     *
+     * @param   name
+     *          The human-friendly name for the field (for error messages).
+     *
+     * @throws  IllegalStateException
+     *          If the field is already set to a different value.
+     */
     public static void ensureUnset(Collection<?> currentValue, Collection<?> newValue, String name)
     throws IllegalStateException {
         if ((currentValue != null) && !currentValue.isEmpty() && !currentValue.equals(newValue)) {
             throw new IllegalStateException(
-                "The " + name + " can only be set when empty (it currently contains `" +
-                currentValue.size() + "` elements).");
+                String.format(
+                    "The %s can only be set when empty (it currently contains `%d` elements).",
+                    name,
+                    currentValue.size()));
         }
     }
 
@@ -150,8 +212,11 @@ public abstract class Argument {
     throws IllegalStateException {
         if ((currentValue != null) && !currentValue.equals(newValue)) {
             throw new IllegalStateException(
-                "The " + name + " can only be set once per schedule (already set to `" +
-                currentValue + "`).");
+                String.format(
+                    "The %s can only be set once (already set to `%s`; was trying to set to `%s`).",
+                    name,
+                    currentValue,
+                    newValue));
         }
     }
 }
