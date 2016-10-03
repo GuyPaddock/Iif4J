@@ -31,6 +31,62 @@ extends StringValue {
     public static final PaymentMethod EMPTY = new PaymentMethod();
 
     /**
+     * Default QB payment method for cash payments.
+     */
+    public static final PaymentMethod CASH = new PaymentMethod("Cash");
+
+    /**
+     * Default QB payment method for payments by check.
+     */
+    public static final PaymentMethod CHECK = new PaymentMethod("Check");
+
+    /**
+     * Default QB payment method for electronic check payments.
+     */
+    public static final PaymentMethod E_CHECK = new PaymentMethod("E-Check");
+
+    /**
+     * Default QB payment method for payments by Automated Clearing House bank
+     * transfers.
+     */
+    public static final PaymentMethod ACH_TRANSFER = new PaymentMethod("ACH Transfer");
+
+    /**
+     * Default QB payment method for payments by bank wire transfer.
+     */
+    public static final PaymentMethod WIRE_TRANSFER = new PaymentMethod("Wire Transfer");
+
+    /**
+     * Default QB payment method for payments by American Express card.
+     */
+    public static final PaymentMethod AMEX = new PaymentMethod("American Express");
+
+    /**
+     * Default QB payment method for payments by Discover card.
+     */
+    public static final PaymentMethod DISCOVER = new PaymentMethod("Discover");
+
+    /**
+     * Default QB payment method for payments by MasterCard.
+     */
+    public static final PaymentMethod MASTERCARD = new PaymentMethod("MasterCard");
+
+    /**
+     * Default QB payment method for payments by Visa card.
+     */
+    public static final PaymentMethod VISA = new PaymentMethod("Visa");
+
+    /**
+     * Default QB payment method for payments by debit card.
+     */
+    public static final PaymentMethod DEBIT_CARD = new PaymentMethod("Debit Card");
+
+    /**
+     * Default QB payment method for payments by gift card.
+     */
+    public static final PaymentMethod GIFT_CARD = new PaymentMethod("Gift Card");
+
+    /**
      * Constructor for a {@code PaymentMethod} to wrap the specified payment method.
      *
      * @param   value
