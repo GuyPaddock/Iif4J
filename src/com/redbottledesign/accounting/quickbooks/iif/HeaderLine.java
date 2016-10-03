@@ -31,12 +31,13 @@ import java.util.List;
  * <ol>
  *   <li>{@code TRNSID}</li>
  *   <li>{@code TRNSTYPE}</li>
+ *   <li>{@code DOCNUM}</li>
  *   <li>{@code DATE}</li>
  *   <li>{@code ACCNT}</li>
  *   <li>{@code NAME}</li>
  *   <li>{@code CLASS}</li>
  *   <li>{@code AMOUNT}</li>
- *   <li>{@code DOCNUM}</li>
+ *   <li>{@code PAYMETH}</li>
  *   <li>{@code MEMO}</li>
  * </ol>
  *
@@ -76,15 +77,15 @@ implements IifExportable {
          * Header line that describes transaction rows inside a transaction.
          */
         TRANSACTION(new String[] {
-            "!TRNS",  "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
-            "AMOUNT", "DOCNUM", "MEMO" }),
+            "!TRNS",  "DOCNUM",  "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
+            "AMOUNT", "PAYMETH", "MEMO" }),
 
         /**
          * Header line that describes split transfer rows inside a transaction.
          */
         SPLIT(new String[] {
-            "!SPL",   "SPLID",  "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
-            "AMOUNT", "DOCNUM", "MEMO" }),
+            "!SPL",   "DOCNUM",  "SPLID",  "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
+            "AMOUNT", "PAYMETH", "MEMO"}),
 
         /**
          * Header line that marks the end of the header.

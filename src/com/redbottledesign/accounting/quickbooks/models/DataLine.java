@@ -28,6 +28,12 @@ import com.redbottledesign.util.Argument;
 public abstract class DataLine
 implements IifExportable, Cloneable {
     /**
+     * The (optional) identifier for the document (i.e. journal entry ID,
+     * payment ID, etc.) that contains the transaction.
+     */
+    private DocNumber docNumber;
+
+    /**
      * The (optional) unique identifier for the transaction.
      */
     private TxnIdentifier id;
@@ -65,10 +71,11 @@ implements IifExportable, Cloneable {
     private Amount amount;
 
     /**
-     * The (optional) identifier for the document (i.e. journal entry ID) that
-     * contains the transaction.
+     * The (optional) method by which the transaction was paid for.
+     *
+     * <p>(This only applies to invoice & payment transactions.)</p>
      */
-    private DocNumber docNumber;
+    private PaymentMethod paymentMethod;
 
     /**
      * The (optional) memo / notes for this transaction line.
@@ -79,11 +86,40 @@ implements IifExportable, Cloneable {
      * Default constructor for {@code DataLine}.
      */
     public DataLine() {
+        this.setDocNumber(DocNumber.EMPTY);
         this.setId(TxnIdentifier.EMPTY);
         this.setTxnClass(TxnClass.EMPTY);
         this.setName(Name.EMPTY);
-        this.setDocNumber(DocNumber.EMPTY);
+        this.setPaymentMethod(PaymentMethod.EMPTY);
         this.setMemo(Memo.EMPTY);
+    }
+
+    /**
+     * Gets the (optional) identifier for the document (i.e. journal entry ID)
+     * that contains the transaction.
+     *
+     * <p>All transaction lines in the same transaction must share the same
+     * document number.</p>
+     *
+     * @return  The document number for the transaction.
+     */
+    public DocNumber getDocNumber() {
+        return docNumber;
+    }
+
+    /**
+     * Sets the (optional) identifier for the document (i.e. journal entry ID)
+     * that contains the transaction.
+     *
+     * <p>All transaction lines in the same transaction must share the same
+     * document number.</p>
+     *
+     * @param   docNumber
+     *          The new document number for the transaction.
+     */
+    public void setDocNumber(final DocNumber docNumber) {
+        Argument.ensureNotNull(docNumber, "docNumber");
+        this.docNumber = docNumber;
     }
 
     /**
@@ -254,31 +290,26 @@ implements IifExportable, Cloneable {
     }
 
     /**
-     * Gets the (optional) identifier for the document (i.e. journal entry ID)
-     * that contains the transaction.
+     * Gets the (optional) payment method for this transaction line.
      *
-     * <p>All transaction lines in the same transaction must share the same
-     * document number.</p>
-     *
-     * @return  The document number for the transaction.
+     * @return The payment method of the transaction.
      */
-    public DocNumber getDocNumber() {
-        return docNumber;
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
     }
 
     /**
-     * Sets the (optional) identifier for the document (i.e. journal entry ID)
-     * that contains the transaction.
+     * Sets the (optional) payment method for this transaction line.
      *
-     * <p>All transaction lines in the same transaction must share the same
-     * document number.</p>
+     * <p>NOTE: If specified, the payment method must match on all lines
+     * (transaction and split) to avoid crashing QuickBooks.</p>
      *
-     * @param   docNumber
-     *          The new document number for the transaction.
+     * @param   paymentMethod
+     *          The new payment method for this transaction line.
      */
-    public void setDocNumber(final DocNumber docNumber) {
-        Argument.ensureNotNull(docNumber, "docNumber");
-        this.docNumber = docNumber;
+    public void setPaymentMethod(final PaymentMethod paymentMethod) {
+        Argument.ensureNotNull(paymentMethod, "paymentMethod");
+        this.paymentMethod = paymentMethod;
     }
 
     /**
@@ -336,6 +367,7 @@ implements IifExportable, Cloneable {
     @Override
     public String toIifString() {
         IifExportable[] columns = new IifExportable[] {
+            this.getDocNumber(),
             this.getId(),
             this.getType(),
             this.getDate(),
@@ -343,12 +375,10 @@ implements IifExportable, Cloneable {
             this.getName(),
             this.getTxnClass(),
             this.getAmount(),
-            this.getDocNumber(),
+            this.getPaymentMethod(),
             this.getMemo(),
         };
 
-        return IifUtils.exportToString(
-            new String[] { this.getLineType() },
-            columns);
+        return IifUtils.exportToString(new String[] { this.getLineType() }, columns);
     }
 }
