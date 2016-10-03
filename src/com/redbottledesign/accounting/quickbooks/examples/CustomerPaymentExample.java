@@ -17,7 +17,7 @@
 package com.redbottledesign.accounting.quickbooks.examples;
 
 import com.redbottledesign.accounting.quickbooks.builders.CustomerPaymentBuilder;
-import com.redbottledesign.accounting.quickbooks.iif.File;
+import com.redbottledesign.accounting.quickbooks.iif.IifFile;
 import com.redbottledesign.accounting.quickbooks.models.*;
 
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ import java.time.LocalDate;
  */
 public class CustomerPaymentExample {
     public static void main(String[] args) {
-        File                    file         = new File();
+        IifFile                 file         = new IifFile();
         Transaction             transaction;
         CustomerPaymentBuilder  builder      = new CustomerPaymentBuilder();
         Account                 undeposited  = new Account("Undeposited Funds");

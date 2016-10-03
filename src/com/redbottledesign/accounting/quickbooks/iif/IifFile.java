@@ -21,12 +21,16 @@ import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import java.util.List;
 
 /**
- * Top-level representation of an IIF file, which can contain zero or more
- * {@link Transaction} objects.
+ * Top-level representation of a QuickBooks IIF file, which can contain zero or
+ * more {@link Transaction} objects.
+ *
+ * <p>Note that an IIF file does not do any I/O. It is merely an abstraction of
+ * the contents of what can be written out to a stream or file on disk, but
+ * contains none of the logic to perform those operations.</p>
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class File extends CompositeExportableList {
+public class IifFile extends CompositeExportableList {
     /**
      * Adds the specified transaction to this file.
      *

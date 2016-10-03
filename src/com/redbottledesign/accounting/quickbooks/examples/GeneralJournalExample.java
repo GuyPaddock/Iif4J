@@ -30,7 +30,7 @@ import java.time.LocalDate;
  */
 public class GeneralJournalExample {
     public static void main(String[] args) {
-        File                    file         = new File();
+        IifFile                 file         = new IifFile();
         Transaction             transaction;
         GeneralJournalBuilder   builder      = new GeneralJournalBuilder();
         Account                 rbdAr        = new Account("Accounts Receivable"),
