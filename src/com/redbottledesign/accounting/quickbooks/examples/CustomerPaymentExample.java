@@ -16,66 +16,34 @@
  */
 package com.redbottledesign.accounting.quickbooks.examples;
 
-import com.redbottledesign.accounting.quickbooks.builders.GeneralJournalBuilder;
-import com.redbottledesign.accounting.quickbooks.iif.*;
+import com.redbottledesign.accounting.quickbooks.builders.CustomerPaymentBuilder;
+import com.redbottledesign.accounting.quickbooks.iif.File;
 import com.redbottledesign.accounting.quickbooks.models.*;
 
 import java.time.LocalDate;
 
 /**
- * An example of building a general journal entry containing three lines and
- * then exporting it to IIF format.
+ * An example of building a customer payment entry and then exporting it to IIF
+ * format.
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class GeneralJournalExample {
+public class CustomerPaymentExample {
     public static void main(String[] args) {
         File                    file         = new File();
         Transaction             transaction;
-        GeneralJournalBuilder   builder      = new GeneralJournalBuilder();
-        Account                 rbdAr        = new Account("Accounts Receivable"),
-                                rbdSalesCons = new Account("Sales Income:Sales - Consulting");
+        CustomerPaymentBuilder  builder      = new CustomerPaymentBuilder();
+        Account                 undeposited  = new Account("Undeposited Funds");
         Name                    contoso      = new Name("Contoso, Inc.");
-        TxnClass                bobClass     = new TxnClass("Contractor:Bob"),
-                                jimClass     = new TxnClass("Contractor:Jim");
 
         builder
+            .setCustomer(contoso)
+            .setAmount(new Amount(3468))
             .setDate(new Date(LocalDate.of(2014, 1, 6)))
-            .setEntryNumber(new DocNumber("INV-893"));
-
-        transaction = builder.build();
-        printSummary(transaction);
-
-        builder.addLine(
-                rbdAr,
-                new Amount(3468),
-                contoso,
-                new Memo("Invoice:893"),
-                TxnClass.EMPTY);
-
-        transaction = builder.build();
-        printSummary(transaction);
-
-        builder.addLine(
-            rbdSalesCons,
-            new Amount(-1608),
-            contoso,
-            new Memo(
-                "Consulting:Team member: Bob Dole Location: Contoso HQ, " +
-                "On-site work by a member of the RedBottle staff."),
-            bobClass);
-
-        transaction = builder.build();
-        printSummary(transaction);
-
-        builder.addLine(
-            rbdSalesCons,
-            new Amount(-1860),
-            contoso,
-            new Memo(
-                "Consulting:Team member: Jim Daniels Location: Contoso, HQ, " +
-                "On-site work by a member of the RedBottle staff."),
-            jimClass);
+            .setPaymentMethod(PaymentMethod.CHECK)
+            .setReferenceNumber(DocNumber.EMPTY)
+            .setMemo(new Memo("Check #8675309"))
+            .setDepositTo(undeposited);
 
         transaction = builder.build();
         printSummary(transaction);

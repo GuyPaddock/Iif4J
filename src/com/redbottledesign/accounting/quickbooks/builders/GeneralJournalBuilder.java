@@ -12,7 +12,8 @@ import java.util.List;
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class GeneralJournalBuilder {
+public class GeneralJournalBuilder
+extends AbstractTransactionBuilder {
     /**
      * The type of transaction this builder constructs.
      */
@@ -75,7 +76,7 @@ public class GeneralJournalBuilder {
      *
      * @return  This object, for chaining.
      */
-    public GeneralJournalBuilder addLine(String account, BigDecimal amount) {
+    public GeneralJournalBuilder addLine(final String account, final BigDecimal amount) {
         return this.addLine(
             new Account(account),
             new Amount(amount),
@@ -102,7 +103,8 @@ public class GeneralJournalBuilder {
      *
      * @return  This object, for chaining.
      */
-    public GeneralJournalBuilder addLine(String account, BigDecimal amount, String name) {
+    public GeneralJournalBuilder addLine(final String account, final BigDecimal amount,
+                                         final String name) {
         return this.addLine(
             new Account(account),
             new Amount(amount),
@@ -132,7 +134,8 @@ public class GeneralJournalBuilder {
      *
      * @return  This object, for chaining.
      */
-    public GeneralJournalBuilder addLine(String account, BigDecimal amount, String name, String memo) {
+    public GeneralJournalBuilder addLine(final String account, final BigDecimal amount,
+                                         final String name, final String memo) {
         return this.addLine(
             new Account(account),
             new Amount(amount),
@@ -165,8 +168,8 @@ public class GeneralJournalBuilder {
      *
      * @return  This object, for chaining.
      */
-    public GeneralJournalBuilder addLine(String account, BigDecimal amount, String name, String memo,
-                                         String txnClass) {
+    public GeneralJournalBuilder addLine(final String account, final BigDecimal amount,
+                                         final String name, final String memo, final String txnClass) {
         return this.addLine(
             new Account(account),
             new Amount(amount),
@@ -199,25 +202,15 @@ public class GeneralJournalBuilder {
      *
      * @return  This object, for chaining.
      */
-    public GeneralJournalBuilder addLine(Account account, Amount amount, Name name, Memo memo,
-                                         TxnClass txnClass) {
-        final List<DataLine> journalLines = this.getJournalLines();
-        DataLine             newLine;
-
-        if (journalLines.isEmpty()) {
-            newLine = new TransactionLine();
-        }
-        else {
-            newLine = new SplitLine();
-        }
-
-        newLine.setAccount(account);
-        newLine.setAmount(amount);
-        newLine.setName(name);
-        newLine.setMemo(memo);
-        newLine.setTxnClass(txnClass);
-
-        journalLines.add(newLine);
+    public GeneralJournalBuilder addLine(final Account account, final Amount amount,
+                                         final Name name, final Memo memo, final TxnClass txnClass) {
+        this.addLine(
+            this.getJournalLines(),
+            account,
+            amount,
+            name,
+            memo,
+            txnClass);
 
         return this;
     }
