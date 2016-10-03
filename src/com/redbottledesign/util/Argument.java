@@ -101,7 +101,7 @@ public abstract class Argument {
     throws IllegalStateException {
         if ((currentValue != 0) && (currentValue != newValue)) {
             throw new IllegalStateException(
-                "The " + name + " can only be set once (already set to `" + currentValue + "`.");
+                "The " + name + " can only be set once (already set to `" + currentValue + "`).");
         }
     }
 
@@ -126,7 +126,7 @@ public abstract class Argument {
         if ((currentValue != null) && !currentValue.isEmpty() && !currentValue.equals(newValue)) {
             throw new IllegalStateException(
                 "The " + name + " can only be set when empty (it currently contains `" +
-                currentValue.size() + "` elements.");
+                currentValue.size() + "` elements).");
         }
     }
 
@@ -151,7 +151,7 @@ public abstract class Argument {
         if ((currentValue != null) && !currentValue.equals(newValue)) {
             throw new IllegalStateException(
                 "The " + name + " can only be set once per schedule (already set to `" +
-                currentValue + "`.");
+                currentValue + "`).");
         }
     }
 }
