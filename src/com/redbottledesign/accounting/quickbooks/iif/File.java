@@ -54,4 +54,16 @@ public class File extends CompositeExportableList {
 
         return result;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Also appends a trailing newline, to signify the end of the file.
+     * (Without this, QuickBooks will not process the last transaction in
+     * the file.)</p>
+     */
+    @Override
+    public String toIifString() {
+        return super.toIifString() + "\n";
+    }
 }
