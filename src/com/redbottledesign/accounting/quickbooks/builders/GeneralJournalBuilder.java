@@ -190,6 +190,73 @@ extends AbstractTransactionBuilder {
      * @param   amount
      *          The amount of money being exchanged.
      *
+     * @return  This object, for chaining.
+     */
+    public GeneralJournalBuilder addLine(final Account account, final Amount amount) {
+        return this.addLine(account, amount, Name.EMPTY, Memo.EMPTY, TxnClass.EMPTY);
+    }
+
+    /**
+     * Adds a new line to the transaction being built.
+     *
+     * <p>By convention, the amount is negative for a credit and positive for a
+     * debit.</p>
+     *
+     * @param   account
+     *          The name of the account that the line affects.
+     *
+     * @param   amount
+     *          The amount of money being exchanged.
+     *
+     * @param   name
+     *          The name (customer, vendor, contractor, etc.) to associate
+     *          with the line.
+     *
+     * @return  This object, for chaining.
+     */
+    public GeneralJournalBuilder addLine(final Account account, final Amount amount,
+                                         final Name name) {
+        return this.addLine(account, amount, name, Memo.EMPTY, TxnClass.EMPTY);
+    }
+
+    /**
+     * Adds a new line to the transaction being built.
+     *
+     * <p>By convention, the amount is negative for a credit and positive for a
+     * debit.</p>
+     *
+     * @param   account
+     *          The name of the account that the line affects.
+     *
+     * @param   amount
+     *          The amount of money being exchanged.
+     *
+     * @param   name
+     *          The name (customer, vendor, contractor, etc.) to associate
+     *          with the line.
+     *
+     * @param   memo
+     *          A note to add to the line.
+     *
+     * @return  This object, for chaining.
+     */
+    public GeneralJournalBuilder addLine(final Account account, final Amount amount,
+                                         final Name name, final Memo memo) {
+        return this.addLine(account, amount, name, memo, TxnClass.EMPTY);
+    }
+
+    /**
+     * Adds a new line to the transaction being built.
+     *
+     * <p>By convention, the amount is negative for a credit and positive for a
+     * debit.</p>
+     *
+     * @param   account
+     *          The name of the account that the line affects.
+     *
+     * @param   amount
+     *          The amount of money being exchanged.
+     *
      * @param   name
      *          The name (customer, vendor, contractor, etc.) to associate
      *          with the line.
