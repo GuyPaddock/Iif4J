@@ -82,6 +82,52 @@ public abstract class Argument {
     }
 
     /**
+     * Ensures that all of the provided argument values are either null or all
+     * have a non-null value.
+     *
+     * <p>This is useful for a group of arguments that are optional, but can
+     * only take effect if all are specified.</p>
+     *
+     * <p>If at least one value is set, but not all of the values are set,
+     * an {@link IllegalArgumentException} is raised with the provided error
+     * message.</p>
+     *
+     * @param   errorMessage
+     *          The error message to include in an exception, if one of the
+     *          values is {@code null} but the rest are not.
+     *
+     * @param   values
+     *          The values to check.
+     *
+     * @throws  IllegalArgumentException
+     *          If one of the values is {@code null} but the rest are not.
+     */
+    public static void ensureAllOrNoneNull(String errorMessage, Object... values) {
+        Integer positionOfFirstNull = null,
+                positionOfFirstSet  = null;
+
+        for (int index = 0; index < values.length; ++index) {
+            Object value = values[index];
+
+            if ((value == null) && (positionOfFirstNull == null)) {
+                positionOfFirstNull = index;
+            }
+
+            if ((value != null) && (positionOfFirstSet == null)) {
+                positionOfFirstSet = index;
+            }
+        }
+
+        if ((positionOfFirstSet != null) && (positionOfFirstNull != null)) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "%s (argument %d is `null`).",
+                    errorMessage,
+                    positionOfFirstNull + 1));
+        }
+    }
+
+    /**
      * Ensures that either the current value is not yet set, or that it matches
      * the provided new value.
      *
