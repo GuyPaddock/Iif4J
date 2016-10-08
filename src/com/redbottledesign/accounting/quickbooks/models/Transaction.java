@@ -174,10 +174,28 @@ implements Cloneable {
      *
      * <p>A transaction termination line is automatically appended to the
      * output.</p>
+     *
+     * <p>The transaction must be in balance in order to be exportable.</p>
+     *
+     * @throws  IllegalStateException
+     *          If the transaction is not in balance.
      */
     @Override
-    protected List<IifExportable> prepareExportables() {
-        final List<IifExportable> result = new LinkedList<>(this.getLines());
+    protected List<IifExportable> prepareExportables()
+    throws IllegalArgumentException {
+        final List<IifExportable> result;
+
+        if (!this.isInBalance()) {
+            throw new IllegalStateException(
+                String.format(
+                    "This transaction is not in balance (CREDITS: %s, DEBITS: %s, " +
+                    "DISCREPANCY: %s",
+                    this.calculateCreditTotal(),
+                    this.calculateDebitTotal(),
+                    this.calculateBalanceDiscrepancy()));
+        }
+
+        result = new LinkedList<>(this.getLines());
 
         result.add(new TransactionTerminationLine());
 
