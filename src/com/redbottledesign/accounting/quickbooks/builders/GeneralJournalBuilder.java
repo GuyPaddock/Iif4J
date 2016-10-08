@@ -31,6 +31,15 @@ extends AbstractTransactionBuilder {
     }
 
     /**
+     * Gets the effective date of the journal entry.
+     *
+     * @return  The date.
+     */
+    public Date getDate() {
+        return this.date;
+    }
+
+    /**
      * Sets the effective date of the journal entry.
      *
      * <p>This populates the date of the IIF transaction.</p>
@@ -44,6 +53,24 @@ extends AbstractTransactionBuilder {
         this.date = date;
 
         return this;
+    }
+
+    /**
+     * Gets the unique entry number for the journal entry.
+     *
+     * @return  The entry number.
+     */
+    public DocNumber getEntryNumber() {
+        return this.entryNumber;
+    }
+
+    /**
+     * Gets the transaction lines that have been created for the transaction.
+     *
+     * @return The list of transaction lines.
+     */
+    protected List<DataLine> getJournalLines() {
+        return this.journalLines;
     }
 
     /**
@@ -271,42 +298,9 @@ extends AbstractTransactionBuilder {
      */
     public GeneralJournalBuilder addLine(final Account account, final Amount amount,
                                          final Name name, final Memo memo, final TxnClass txnClass) {
-        this.addLine(
-            this.getJournalLines(),
-            account,
-            amount,
-            name,
-            memo,
-            txnClass);
+        this.addLine(this.getJournalLines(), account, amount, name, memo, txnClass);
 
         return this;
-    }
-
-    /**
-     * Gets the effective date of the journal entry.
-     *
-     * @return  The date.
-     */
-    protected Date getDate() {
-        return this.date;
-    }
-
-    /**
-     * Gets the unique entry number for the journal entry.
-     *
-     * @return  The entry number.
-     */
-    protected DocNumber getEntryNumber() {
-        return this.entryNumber;
-    }
-
-    /**
-     * Gets the transaction lines that have been created for the transaction.
-     *
-     * @return The list of transaction lines.
-     */
-    protected List<DataLine> getJournalLines() {
-        return this.journalLines;
     }
 
     /**
@@ -325,11 +319,13 @@ extends AbstractTransactionBuilder {
      * @return  The fully constructed transaction.
      *
      * @throws  IllegalArgumentException
-     *          If either the date and entry number values have not yet been
-     *          set.
+     *          If any required field has not yet been set.
+     *
+     * @throws  IllegalStateException
+     *          If the transaction is not in balance.
      */
     public Transaction build()
-    throws IllegalArgumentException {
+    throws IllegalArgumentException, IllegalStateException {
         Transaction transaction = new Transaction();
         DocNumber   entryNumber = this.getEntryNumber();
         Date        date        = this.getDate();
@@ -344,6 +340,8 @@ extends AbstractTransactionBuilder {
 
             transaction.addLine(line);
         }
+
+        transaction.ensureIsInBalance();
 
         return transaction;
     }

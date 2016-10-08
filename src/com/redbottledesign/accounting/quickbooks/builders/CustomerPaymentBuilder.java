@@ -214,15 +214,18 @@ extends AbstractTransactionBuilder {
      * @return  The fully constructed transaction.
      *
      * @throws  IllegalArgumentException
-     *          If either the date and entry number values have not yet been
-     *          set.
+     *          If any required field has not yet been set.
+     *
+     * @throws  IllegalStateException
+     *          If the transaction is not in balance.
      */
     public Transaction build()
-    throws IllegalArgumentException {
+    throws IllegalArgumentException, IllegalStateException {
         Transaction     transaction     = new Transaction();
         List<DataLine>  paymentLines    = new LinkedList<>();
         Name            customer        = this.getCustomer();
-        Amount          amount          = this.getAmount();
+        Amount          debitAmount     = this.getAmount(),
+                        creditAmount;
         Date            date            = this.getDate();
         PaymentMethod   paymentMethod   = this.getPaymentMethod();
         DocNumber       referenceNumber = this.getReferenceNumber();
@@ -230,7 +233,7 @@ extends AbstractTransactionBuilder {
         Account         depositTo       = this.getDepositTo();
 
         Argument.ensureNotNull(customer,        "customer");
-        Argument.ensureNotNull(amount,          "amount");
+        Argument.ensureNotNull(debitAmount,     "debitAmount");
         Argument.ensureNotNull(date,            "date");
         Argument.ensureNotNull(paymentMethod,   "paymentMethod");
         Argument.ensureNotNull(referenceNumber, "referenceNumber");
@@ -238,22 +241,12 @@ extends AbstractTransactionBuilder {
         Argument.ensureNotNull(depositTo,       "depositTo");
 
         // Debit to the deposit account
-        this.addLine(
-            paymentLines,
-            depositTo,
-            amount,
-            customer,
-            memo,
-            TxnClass.EMPTY);
+        this.addLine(paymentLines, depositTo, debitAmount, customer, memo);
 
         // Credit from AR
-        this.addLine(
-            paymentLines,
-            ACCOUNTS_RECEIVABLE,
-            new Amount(amount.getValue().negate()),
-            customer,
-            memo,
-            TxnClass.EMPTY);
+        creditAmount = new Amount(amount.getValue().negate());
+
+        this.addLine(paymentLines, ACCOUNTS_RECEIVABLE, creditAmount, customer, memo);
 
         for (DataLine line : paymentLines) {
             line.setType(TRANSACTION_TYPE);
@@ -263,6 +256,8 @@ extends AbstractTransactionBuilder {
 
             transaction.addLine(line);
         }
+
+        transaction.ensureIsInBalance();
 
         return transaction;
     }
