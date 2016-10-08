@@ -95,6 +95,27 @@ implements Cloneable {
     }
 
     /**
+     * Checks whether or not this transaction is considered to be in balance,
+     * and raises an appropriate exception if it is not.
+     *
+     * @see     #isInBalance()
+     *
+     * @throws  IllegalStateException
+     *          If the transaction is not in balance.
+     */
+    public void ensureIsInBalance() {
+        if (!this.isInBalance()) {
+            throw new IllegalStateException(
+                String.format(
+                    "This transaction is not in balance (CREDITS: %s, DEBITS: %s, " +
+                    "DISCREPANCY: %s",
+                    this.calculateCreditTotal(),
+                    this.calculateDebitTotal(),
+                    this.calculateBalanceDiscrepancy()));
+        }
+    }
+
+    /**
      * Calculates the amount (if any) that this is "out of balance".
      *
      * <p>A transaction is in balance only if both the totals of debits and the
@@ -185,15 +206,7 @@ implements Cloneable {
     throws IllegalArgumentException {
         final List<IifExportable> result;
 
-        if (!this.isInBalance()) {
-            throw new IllegalStateException(
-                String.format(
-                    "This transaction is not in balance (CREDITS: %s, DEBITS: %s, " +
-                    "DISCREPANCY: %s",
-                    this.calculateCreditTotal(),
-                    this.calculateDebitTotal(),
-                    this.calculateBalanceDiscrepancy()));
-        }
+        this.ensureIsInBalance();
 
         result = new LinkedList<>(this.getLines());
 
