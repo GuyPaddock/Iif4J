@@ -34,6 +34,7 @@ extends AbstractTransactionBuilder {
      */
     public PaymentDepositBuilder() {
         this.paymentTotal = BigDecimal.ZERO;
+        this.paymentLines = new LinkedList<>();
     }
 
     /**
@@ -196,6 +197,16 @@ extends AbstractTransactionBuilder {
     }
 
     /**
+     * Indicates whether or not the deposit has been set to have cash back.
+     *
+     * @return  {@code true} if the deposit has a cash back amount;
+     *          or, {@code false}, otherwise.
+     */
+    public boolean hasCashBack() {
+        return (this.getCashBackAccount() != null);
+    }
+
+    /**
      * Gets the total amount of all payments added on this builder.
      *
      * @return The payment total.
@@ -295,13 +306,15 @@ extends AbstractTransactionBuilder {
      */
     public Transaction build()
     throws IllegalArgumentException, IllegalStateException {
-        Transaction     transaction     = new Transaction();
-        List<DataLine>  depositLines    = new LinkedList<>();
+        Transaction     transaction  = new Transaction();
+        List<DataLine>  depositLines = new LinkedList<>();
 
         this.ensureReadyToBuild();
 
         this.addDepositLine(depositLines);
         this.addCashBackLine(depositLines);
+
+        depositLines.addAll(this.getPaymentLines());
 
         for (DataLine line : depositLines) {
             line.setType(TRANSACTION_TYPE);
@@ -324,9 +337,17 @@ extends AbstractTransactionBuilder {
      *          deposit line will be added.
      */
     protected void addDepositLine(List<DataLine> depositLines) {
-        Amount      cashBackAmount  = this.getCashBackAmount();
-        BigDecimal  paymentTotal    = this.getPaymentTotal(),
-                    depositTotal    = paymentTotal.subtract(cashBackAmount.getValue());
+        final BigDecimal paymentTotal  = this.getPaymentTotal(),
+                         depositTotal;
+
+        if (this.hasCashBack()) {
+            final Amount cashBackAmount = this.getCashBackAmount();
+
+            depositTotal = paymentTotal.subtract(cashBackAmount.getValue());
+        }
+        else {
+            depositTotal = paymentTotal;
+        }
 
         this.addLine(
             depositLines,
@@ -347,7 +368,7 @@ extends AbstractTransactionBuilder {
     protected void addCashBackLine(List<DataLine> depositLines) {
         Amount  cashBackAmount  = this.getCashBackAmount();
 
-        if (cashBackAmount != null) {
+        if (this.hasCashBack()) {
             Account cashBackAccount = this.getCashBackAccount();
             Memo    cashBackMemo    = this.getCashBackMemo();
 
