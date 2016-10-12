@@ -115,7 +115,8 @@ implements IifExportable {
      */
     protected void setValue(String value) {
         if (!isNullOkay() && (value == null || value.isEmpty())) {
-            throw new IllegalArgumentException("value cannot be null or empty.");
+            throw new IllegalArgumentException(
+                this.getClass().getSimpleName() + " value cannot be null or empty.");
         }
 
         this.value = value;
