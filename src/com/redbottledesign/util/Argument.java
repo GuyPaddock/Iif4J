@@ -17,6 +17,8 @@
 package com.redbottledesign.util;
 
 import java.util.Collection;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -256,7 +258,32 @@ public abstract class Argument {
      */
     public static void ensureUnset(Object currentValue, Object newValue, String name)
     throws IllegalStateException {
-        if ((currentValue != null) && !currentValue.equals(newValue)) {
+        ensureUnset(currentValue, newValue, Objects::isNull, name);
+    }
+
+    /**
+     * Ensures that either the current value is empty, as defined by the
+     * provided function, or that it matches the provided new value.
+     *
+     * @param   currentValue
+     *          The current value of the field.
+     *
+     * @param   newValue
+     *          The proposed new value for the field.
+     *
+     * @param   emptyFunc
+     *          The function used to test whether the current value is empty.
+     *
+     * @param   name
+     *          The human-friendly name for the field (for error messages).
+     *
+     * @throws  IllegalStateException
+     *          If the field is already set to a different value.
+     */
+    public static <T> void ensureUnset(T currentValue, T newValue, Function<T, Boolean> emptyFunc,
+                                       String name)
+    throws IllegalStateException {
+        if (!emptyFunc.apply(currentValue) && !currentValue.equals(newValue)) {
             throw new IllegalStateException(
                 String.format(
                     "The %s can only be set once (already set to `%s`; was trying to set to `%s`).",
