@@ -16,6 +16,7 @@
  */
 package com.redbottledesign.util;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
@@ -41,7 +42,8 @@ public abstract class Argument {
     }
 
     /**
-     * Ensures that the provided value is within the specified range of values, inclusively.
+     * Ensures that the provided value is within the specified range of values,
+     * inclusively.
      *
      * @param   value
      *          The value of the argument being checked.
@@ -61,6 +63,40 @@ public abstract class Argument {
                 String.format(
                     "%s must be between %f and %f, inclusive (was given `%f`).",
                     name, min, max, value));
+        }
+    }
+
+    /**
+     * Ensures that the provided {@link BigDecimal} value is equal to a
+     * negative value, or zero.
+     *
+     * @param   value
+     *          The value of the argument being checked.
+     *
+     * @param   name
+     *          The human-friendly name for the argument (for error messages).
+     */
+    public static void ensureNegativeOrZero(BigDecimal value, String name) {
+        if (value.signum() > 0) {
+            throw new IllegalArgumentException(
+                String.format("%s cannot be positive (was given `%s`).", name, value));
+        }
+    }
+
+    /**
+     * Ensures that the provided {@link BigDecimal} value is equal to a
+     * positive value, or zero.
+     *
+     * @param   value
+     *          The value of the argument being checked.
+     *
+     * @param   name
+     *          The human-friendly name for the argument (for error messages).
+     */
+    public static void ensurePositiveOrZero(BigDecimal value, String name) {
+        if (value.signum() < 0) {
+            throw new IllegalArgumentException(
+                String.format("%s cannot be negative (was given `%s`).", name, value));
         }
     }
 

@@ -267,9 +267,7 @@ extends AbstractTransactionBuilder {
         Argument.ensureNotNull(txnClass,        "txnClass");
         Argument.ensureNotNull(amount,          "amount");
 
-        if (amount.getValue().signum() < 0) {
-            throw new IllegalArgumentException("Payment amount cannot be negative.");
-        }
+        Argument.ensurePositiveOrZero(amount.getValue(), "amount");
 
         paymentSplit.setName(receivedFrom);
         paymentSplit.setAccount(fromAccount);
