@@ -21,6 +21,9 @@ import com.redbottledesign.accounting.quickbooks.iif.CompositeExportable;
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.iif.TransactionTerminationLine;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -108,10 +111,11 @@ implements Cloneable {
             throw new IllegalStateException(
                 String.format(
                     "This transaction is not in balance (CREDITS: %s, DEBITS: %s, " +
-                    "DISCREPANCY: %s",
+                    "DISCREPANCY: %s%n%s",
                     this.calculateCreditTotal(),
                     this.calculateDebitTotal(),
-                    this.calculateBalanceDiscrepancy()));
+                    this.calculateBalanceDiscrepancy(),
+                    this.asHumanReadableReport()));
         }
     }
 
@@ -150,6 +154,54 @@ implements Cloneable {
      */
     public BigDecimal calculateCreditTotal() {
         return this.calculateTotal(TransactionEffect.CREDIT);
+    }
+
+    /**
+     * Converts this transaction to a human-friendly report, suitable for
+     * printing.
+     *
+     * <p>The account, debits, and credits of each line are included. The
+     * transaction does not need to be in balance for this to be
+     * generated.</p>
+     *
+     * @return  The contents of this transaction, as a report.
+     */
+    public String asHumanReadableReport() {
+        String result = null;
+
+        try (StringWriter   stringWriter = new StringWriter();
+             PrintWriter    printWriter  = new PrintWriter(stringWriter)) {
+            String rowFormat = "%-64s\t%8s\t\t%8s%n";
+
+            printWriter.println("Transaction Report");
+            printWriter.println("==================");
+
+            printWriter.printf(rowFormat, "Account", "Debits", "Credits");
+
+            for (DataLine line : this.getLines()) {
+                Account     account     = line.getAccount();
+                BigDecimal  lineValue   = line.getAmount().getValue();
+
+                if (lineValue.signum() >= 0) {
+                    printWriter.printf(rowFormat, account.getValue(), lineValue.abs(), "");
+                }
+                else {
+                    printWriter.printf(rowFormat, account.getValue(), "", lineValue.abs());
+                }
+            }
+
+            printWriter.println();
+            printWriter.flush();
+
+            result = stringWriter.toString();
+        }
+
+        catch (IOException ex) {
+            System.err.println("Failed to export transaction report: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
