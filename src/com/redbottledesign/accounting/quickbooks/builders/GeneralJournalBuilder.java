@@ -307,14 +307,12 @@ extends AbstractTransactionBuilder {
      * Builds the transaction, using the parameters set on this builder
      * instance.
      *
-     * <p>Both the date and entry number must be set before calling this
-     * method.</p>
+     * <p>The date must be set before calling this method.</p>
      *
      * <p>This can be called multiple times to generate identical
      * transactions.</p>
      *
      * @see #setDate(Date)
-     * @see #setEntryNumber(DocNumber)
      *
      * @return  The fully constructed transaction.
      *
@@ -330,13 +328,15 @@ extends AbstractTransactionBuilder {
         DocNumber   entryNumber = this.getEntryNumber();
         Date        date        = this.getDate();
 
-        Argument.ensureNotNull(date,        "date");
-        Argument.ensureNotNull(entryNumber, "entryNumber");
+        Argument.ensureNotNull(date, "date");
 
         for (DataLine line : this.getJournalLines()) {
             line.setType(TRANSACTION_TYPE);
             line.setDate(date);
-            line.setDocNumber(entryNumber);
+
+            if (entryNumber != null) {
+                line.setDocNumber(entryNumber);
+            }
 
             transaction.addLine(line);
         }
