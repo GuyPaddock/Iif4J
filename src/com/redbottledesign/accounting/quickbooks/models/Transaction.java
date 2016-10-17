@@ -110,10 +110,10 @@ implements Cloneable {
         if (!this.isInBalance()) {
             throw new IllegalStateException(
                 String.format(
-                    "This transaction is not in balance (CREDITS: %s, DEBITS: %s, " +
+                    "This transaction is not in balance (DEBITS: %s, CREDITS: %s, " +
                     "DISCREPANCY: %s%n%s",
-                    this.calculateCreditTotal(),
                     this.calculateDebitTotal(),
+                    this.calculateCreditTotal(),
                     this.calculateBalanceDiscrepancy(),
                     this.asHumanReadableReport()));
         }
