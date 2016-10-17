@@ -48,4 +48,24 @@ extends StringValue {
     private DocNumber() {
         super("", true);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The value can be no longer than 15 characters.</p>
+     *
+     * @throws  IllegalArgumentException
+     *          If the value is longer than 15 characters.
+     */
+    @Override
+    protected void setValue(final String value)
+    throws IllegalArgumentException {
+        if (value.length() > 15) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Value cannot be longer than 15 characters (was given `%s`).", value));
+        }
+
+        super.setValue(value);
+    }
 }
