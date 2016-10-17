@@ -17,6 +17,7 @@
 package com.redbottledesign.accounting.quickbooks.models;
 
 import com.redbottledesign.accounting.TransactionEffect;
+import com.redbottledesign.accounting.quickbooks.exception.OutOfBalanceException;
 import com.redbottledesign.accounting.quickbooks.iif.CompositeExportable;
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.iif.TransactionTerminationLine;
@@ -103,12 +104,13 @@ implements Cloneable {
      *
      * @see     #isInBalance()
      *
-     * @throws  IllegalStateException
+     * @throws  OutOfBalanceException
      *          If the transaction is not in balance.
      */
-    public void ensureIsInBalance() {
+    public void ensureIsInBalance()
+    throws OutOfBalanceException {
         if (!this.isInBalance()) {
-            throw new IllegalStateException(
+            throw new OutOfBalanceException(
                 String.format(
                     "This transaction is not in balance (DEBITS: %s, CREDITS: %s, " +
                     "DISCREPANCY: %s%n%s",
@@ -250,12 +252,12 @@ implements Cloneable {
      *
      * <p>The transaction must be in balance in order to be exportable.</p>
      *
-     * @throws  IllegalStateException
+     * @throws  OutOfBalanceException
      *          If the transaction is not in balance.
      */
     @Override
     protected List<IifExportable> prepareExportables()
-    throws IllegalArgumentException {
+    throws OutOfBalanceException {
         final List<IifExportable> result;
 
         this.ensureIsInBalance();
