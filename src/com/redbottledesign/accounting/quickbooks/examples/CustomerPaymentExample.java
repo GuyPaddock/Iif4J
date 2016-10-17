@@ -18,7 +18,14 @@ package com.redbottledesign.accounting.quickbooks.examples;
 
 import com.redbottledesign.accounting.quickbooks.builders.CustomerPaymentBuilder;
 import com.redbottledesign.accounting.quickbooks.iif.IifFile;
-import com.redbottledesign.accounting.quickbooks.models.*;
+import com.redbottledesign.accounting.quickbooks.models.Account;
+import com.redbottledesign.accounting.quickbooks.models.Amount;
+import com.redbottledesign.accounting.quickbooks.models.Date;
+import com.redbottledesign.accounting.quickbooks.models.DocNumber;
+import com.redbottledesign.accounting.quickbooks.models.Memo;
+import com.redbottledesign.accounting.quickbooks.models.Name;
+import com.redbottledesign.accounting.quickbooks.models.PaymentMethod;
+import com.redbottledesign.accounting.quickbooks.models.Transaction;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2016 Red Bottle Design, LLC
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.redbottledesign.accounting.quickbooks.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Comparator;
 
 /**
@@ -20,9 +37,9 @@ implements Comparator<BigDecimal> {
 
     /**
      * Applies the standard US dollar precision of two decimal places, with
-     * appropriate rounding {@link BigDecimal#ROUND_HALF_UP}.
+     * appropriate rounding {@link RoundingMode#HALF_UP}.
      *
-     * <p>TODO: Support {@link BigDecimal#ROUND_HALF_EVEN} at some point.</p>
+     * <p>TODO: Support {@link RoundingMode#HALF_EVEN} at some point.</p>
      *
      * @param   value
      *          The value to round to two decimal places.
@@ -30,6 +47,6 @@ implements Comparator<BigDecimal> {
      * @return  A new {@link BigDecimal} value with the appropriate precision.
      */
     public static BigDecimal applyPrecision(BigDecimal value) {
-        return value.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return value.setScale(2, RoundingMode.HALF_UP);
     }
 }
