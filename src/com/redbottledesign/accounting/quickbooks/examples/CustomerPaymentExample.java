@@ -56,6 +56,7 @@ public class CustomerPaymentExample {
         printSummary(transaction);
 
         file.addTransaction(transaction);
+        file.addCustomerName(contoso);
 
         System.out.println(file.toIifString());
     }

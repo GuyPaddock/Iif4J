@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A representation of a header line at the top of an IIF file.
+ * A representation of a header line at the top of tables in IIF files.
  *
- * <p>This version of the file header configures Intuit to take in the
- * following columns, in the order specified below:</p>
+ * <p>This version of the file header configures QuickBooks to take in the
+ * following columns for transactions, in the order specified below:</p>
  *
  * <ol>
  *   <li>{@code TRNSID}</li>
@@ -39,6 +39,13 @@ import java.util.List;
  *   <li>{@code AMOUNT}</li>
  *   <li>{@code PAYMETH}</li>
  *   <li>{@code MEMO}</li>
+ * </ol>
+ *
+ * <p>The following columns are used for Customer, Vendor, and Other Names, in
+ * the order specified below:</p>
+ *
+ * <ol>
+ *   <li>{@code NAME}</li>
  * </ol>
  *
  * @author Guy Paddock (guy@redbottledesign.com)
@@ -74,25 +81,42 @@ implements IifExportable {
      */
     public enum Type {
         /**
-         * Header line that describes transaction rows inside a transaction.
+         * Header line that describes the schema for transaction rows inside a
+         * transaction.
          */
         TRANSACTION(new String[] {
             "!TRNS",  "DOCNUM",  "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
             "AMOUNT", "PAYMETH", "MEMO" }),
 
         /**
-         * Header line that describes split transfer rows inside a transaction.
+         * Header line that describes the schema for split rows inside a
+         * transaction.
          */
-        SPLIT(new String[] {
+        TRANSACTION_SPLIT(new String[] {
             "!SPL",   "DOCNUM",  "SPLID",  "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
             "AMOUNT", "PAYMETH", "MEMO"}),
 
         /**
-         * Header line that marks the end of the header.
+         * Header line that marks the end of the transaction schema header.
          */
-        TERMINATION(new String[] {
+        TRANSACTION_TERMINATION(new String[] {
             "!ENDTRNS", ""
-        });
+        }),
+
+        /**
+         * Header line that describes the schema for customer names.
+         */
+        CUSTOMER(new String[] { "!CUST", "NAME" }),
+
+        /**
+         * Header line that describes the schema for vendor names.
+         */
+        VENDOR(new String[] { "!VEND", "NAME" }),
+
+        /**
+         * Header line that describes the schema for other names.
+         */
+        OTHER_NAME(new String[] { "!OTHERNAME", "NAME" });
 
         private final List<String> columns;
 

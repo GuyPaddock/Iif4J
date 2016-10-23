@@ -20,7 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A representation of the three lines that appear at the top of IIF files.
+ * A representation of the three lines that appear at the top of a transaction
+ * table in an IIF file.
  *
  * <p>Each header line indicates to QuickBooks which columns are included in
  * each of the following lines of the IIF file, as well as what order they
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class FileHeader
+public class TransactionHeader
 extends CompositeExportable {
     /**
      * {@inheritDoc}
@@ -38,8 +39,8 @@ extends CompositeExportable {
     protected List<IifExportable> prepareExportables() {
         List<IifExportable> result = Arrays.asList(
             new HeaderLine(HeaderLine.Type.TRANSACTION),
-            new HeaderLine(HeaderLine.Type.SPLIT),
-            new HeaderLine(HeaderLine.Type.TERMINATION)
+            new HeaderLine(HeaderLine.Type.TRANSACTION_SPLIT),
+            new HeaderLine(HeaderLine.Type.TRANSACTION_TERMINATION)
         );
 
         return result;

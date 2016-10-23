@@ -88,6 +88,7 @@ public class GeneralJournalExample {
         printSummary(transaction);
 
         file.addTransaction(transaction);
+        file.addCustomerName(contoso);
 
         System.out.println(file.toIifString());
     }
