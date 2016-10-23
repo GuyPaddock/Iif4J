@@ -28,7 +28,7 @@ import com.redbottledesign.accounting.quickbooks.util.IifUtils;
  * @author Guy Paddock (guy@redbottledesign.com)
  */
 public class StringValue
-implements IifExportable {
+implements IifExportable, Comparable<StringValue> {
     /**
      * A non-null placeholder for a StringValue that represents no value.
      */
@@ -40,7 +40,7 @@ implements IifExportable {
      * The default is {@code false}; this is used internally to provide the
      * {@link #EMPTY} sentinel value.
      */
-    private Boolean isNullOkay;
+    private Boolean isEmptyOkay;
 
     /**
      * The {@link String} value inside this object.
@@ -65,37 +65,37 @@ implements IifExportable {
      * <p>This should only be used internally by subclasses, in order to
      * construct {@code EMPTY} sentinel values.</p>
      *
-     * @param   isNullOkay
+     * @param   isEmptyOkay
      *          Whether or not {@code value} can be {@code null} or an empty
      *          string.
      *
      * @param   value
      *          The value to wrap.
      */
-    protected StringValue(String value, Boolean isNullOkay) {
-        this.setNullOkay(isNullOkay);
+    protected StringValue(String value, Boolean isEmptyOkay) {
+        this.setEmptyOkay(isEmptyOkay);
         this.setValue(value);
     }
 
     /**
-     * Gets whether or not the value can be {@code null} or an empty string.
+     * Gets whether or not the value can be an empty string.
      *
      * @return  {@code true} if {@code null} or an empty string is permitted;
      *          otherwise, {@code false}.
      */
-    protected boolean isNullOkay() {
-        return this.isNullOkay;
+    protected boolean isEmptyOkay() {
+        return this.isEmptyOkay;
     }
 
     /**
-     * Sets whether or not the value can be {@code null} or an empty string.
+     * Sets whether or not the value can be an empty string.
      *
-     * @param   isNullOkay
-     *          {@code true} if {@code null} or an empty string should be
-     *          permitted; otherwise, {@code false}.
+     * @param   isEmptyOkay
+     *          {@code true} if an empty string should be permitted;
+     *          otherwise, {@code false}.
      */
-    protected void setNullOkay(boolean isNullOkay) {
-        this.isNullOkay = isNullOkay;
+    protected void setEmptyOkay(boolean isEmptyOkay) {
+        this.isEmptyOkay = isEmptyOkay;
     }
 
     /**
@@ -114,9 +114,13 @@ implements IifExportable {
      *          The new value.
      */
     protected void setValue(String value) {
-        if (!isNullOkay() && (value == null || value.isEmpty())) {
+        if (value == null) {
             throw new IllegalArgumentException(
-                this.getClass().getSimpleName() + " value cannot be null or empty.");
+                this.getClass().getSimpleName() + " value cannot be null.");
+        }
+        else if (!isEmptyOkay() && value.isEmpty()) {
+            throw new IllegalArgumentException(
+                this.getClass().getSimpleName() + " value cannot be empty.");
         }
 
         this.value = value;
@@ -132,5 +136,63 @@ implements IifExportable {
     @Override
     public String toIifString() {
         return IifUtils.escapeColumn(this.getValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Two {@link StringValue} instances are equal if they are the same type
+     * and wrap the same value.</p>
+     */
+    @Override
+    public boolean equals(final Object other) {
+        boolean result;
+
+        if (this == other) {
+            result = true;
+        }
+        else if (other.getClass().equals(this.getClass())) {
+            StringValue that = (StringValue)other;
+
+            result = this.getValue().equals(((StringValue)other).getValue());
+        }
+        else {
+            result = false;
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Two {@link StringValue} instances are compared based on the values
+     * they wrap, such that they are sorted alphabetically.</p>
+     */
+    @Override
+    public int compareTo(final StringValue other) {
+        int result;
+
+        if (this.equals(other)) {
+            result = 0;
+        }
+        else if (other == null) {
+            result = -1;
+        }
+        else {
+            result = this.getValue().compareTo(other.getValue());
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The hash code is based on the wrapped value's hashcode.</p>
+     */
+    @Override
+    public int hashCode() {
+        return this.getValue().hashCode();
     }
 }
