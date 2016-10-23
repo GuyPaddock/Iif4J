@@ -50,7 +50,7 @@ public class GeneralJournalExample {
             .setDate(new Date(LocalDate.of(2014, 1, 6)))
             .setEntryNumber(new DocNumber("INV-893"));
 
-        transaction = builder.build();
+        transaction = builder.build(false);
         printSummary(transaction);
 
         builder.addLine(
@@ -60,7 +60,7 @@ public class GeneralJournalExample {
                 new Memo("Invoice:893"),
                 TxnClass.EMPTY);
 
-        transaction = builder.build();
+        transaction = builder.build(false);
         printSummary(transaction);
 
         builder.addLine(
@@ -72,7 +72,7 @@ public class GeneralJournalExample {
                 "On-site work by a member of the RedBottle staff."),
             bobClass);
 
-        transaction = builder.build();
+        transaction = builder.build(false);
         printSummary(transaction);
 
         builder.addLine(
@@ -84,7 +84,7 @@ public class GeneralJournalExample {
                 "On-site work by a member of the RedBottle staff."),
             jimClass);
 
-        transaction = builder.build();
+        transaction = builder.build(false);
         printSummary(transaction);
 
         file.addTransaction(transaction);
@@ -100,6 +100,7 @@ public class GeneralJournalExample {
      *          The transaction being summarized.
      */
     protected static void printSummary(Transaction transaction) {
+        System.out.println(transaction.asHumanReadableReport());
         System.out.println("Lines: "       + transaction.getLines().size());
         System.out.println("In balance? "  + transaction.isInBalance());
         System.out.println("Discrepancy: " + transaction.calculateBalanceDiscrepancy());

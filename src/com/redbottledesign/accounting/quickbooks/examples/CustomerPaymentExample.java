@@ -68,6 +68,7 @@ public class CustomerPaymentExample {
      *          The transaction being summarized.
      */
     protected static void printSummary(Transaction transaction) {
+        System.out.println(transaction.asHumanReadableReport());
         System.out.println("Lines: "       + transaction.getLines().size());
         System.out.println("In balance? "  + transaction.isInBalance());
         System.out.println("Discrepancy: " + transaction.calculateBalanceDiscrepancy());

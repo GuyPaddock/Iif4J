@@ -332,7 +332,9 @@ extends AbstractTransactionBuilder {
      * Builds the transaction, using the parameters set on this builder
      * instance.
      *
-     * <p>The date must be set before calling this method.</p>
+     * <p>The date must be set and the transaction must be in balance before
+     * calling this method. If you wish to generate a transaction even
+     * if it is not in balance, use {@link #build(boolean)} instead.</p>
      *
      * <p>This can be called multiple times to generate identical
      * transactions.</p>
@@ -348,6 +350,37 @@ extends AbstractTransactionBuilder {
      *          If the transaction is not in balance.
      */
     public Transaction build()
+    throws IllegalArgumentException, IllegalStateException {
+        return this.build(true);
+    }
+
+    /**
+     * Builds the transaction, using the parameters set on this builder
+     * instance.
+     *
+     * <p>The date must be set before calling this method. If
+     * {@code mustBalance} is {@code true}, the transaction must also be in
+     * balance.</p>
+     *
+     * <p>This can be called multiple times to generate identical
+     * transactions.</p>
+     *
+     * @see #setDate(Date)
+     *
+     * @param   mustBalance
+     *          Whether the transaction must be strictly in balance in order
+     *          to be exported.
+     *
+     * @return  The fully constructed transaction.
+     *
+     * @throws  IllegalArgumentException
+     *          If any required field has not yet been set.
+     *
+     * @throws  IllegalStateException
+     *          If {@code mustBalance} is {@code true} and the transaction is
+     *          not in balance.
+     */
+    public Transaction build(boolean mustBalance)
     throws IllegalArgumentException, IllegalStateException {
         Transaction transaction = new Transaction();
         DocNumber   entryNumber = this.getEntryNumber();
@@ -366,8 +399,12 @@ extends AbstractTransactionBuilder {
             transaction.addLine(line);
         }
 
-        transaction.ensureIsInBalance();
+        if (mustBalance) {
+            transaction.ensureIsInBalance();
+        }
 
         return transaction;
     }
+
+
 }
