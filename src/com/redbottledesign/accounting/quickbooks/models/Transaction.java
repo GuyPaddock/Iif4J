@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A QuickBooks transaction.
@@ -47,7 +48,20 @@ implements Cloneable {
      * Default constructor for {@code Transaction}.
      */
     public Transaction() {
-        this.setLines(Collections.emptyList());
+        this(Collections.emptyList());
+    }
+
+    /**
+     * Constructor that initializes a new {@code Transaction} to contain the
+     * given list of transaction lines.
+     *
+     * <p>Each line of the list is cloned and added into a new list.</p>
+     *
+     * @param   lines
+     *          The lines from which to populate the new transaction.
+     */
+    public Transaction(List<DataLine> lines) {
+        this.setLines(lines);
     }
 
     /**
@@ -62,13 +76,16 @@ implements Cloneable {
     /**
      * Sets the lines in this transaction.
      *
-     * <p>The contents of the list are copied into a new list.</p>
+     * <p>Each line of the list is cloned and added into a new list.</p>
      *
      * @param   lines
      *          The new list of lines.
      */
     protected void setLines(final List<DataLine> lines) {
-        this.lines = new LinkedList<>(lines);
+        this.lines =
+            lines.parallelStream()
+                .map(DataLine::clone)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
