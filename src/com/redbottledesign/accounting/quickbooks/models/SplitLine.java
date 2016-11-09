@@ -22,7 +22,8 @@ package com.redbottledesign.accounting.quickbooks.models;
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class SplitLine extends DataLine {
+public class SplitLine
+extends DataLine {
     /**
      * {@inheritDoc}
      *

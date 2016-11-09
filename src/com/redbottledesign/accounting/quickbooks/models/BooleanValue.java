@@ -17,38 +17,37 @@
 package com.redbottledesign.accounting.quickbooks.models;
 
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
-import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
 /**
- * Parent class for values that are represented internally as a {@link String}.
+ * Parent class for values that are represented internally as a {@link Boolean}.
  *
  * <p>{@code null} or empty strings are not allowed. Use {@link #EMPTY} to
  * represent such as string.</p>
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class StringValue
-extends AbstractValue<String>
-implements IifExportable, Comparable<StringValue> {
+public class BooleanValue
+extends AbstractValue<Boolean>
+implements IifExportable {
     /**
-     * A non-null placeholder for a StringValue that represents no value.
+     * A non-null placeholder for a BooleanValue that represents no value.
      */
-    public static final StringValue EMPTY = new StringValue("", true);
+    public static final BooleanValue EMPTY = new BooleanValue(null, true);
 
     /**
-     * Constructor for {@code StringValue} that populates the new instance from
-     * the provided {@link String}.
+     * Constructor for {@code BooleanValue} that populates the new instance from
+     * the provided {@link Boolean}.
      *
      * @param   value
      *          The value to wrap.
      */
-    public StringValue(String value) {
+    public BooleanValue(Boolean value) {
         super(value, false);
     }
 
     /**
-     * Internal constructor for {@code StringValue} that permits a {@code null}
-     * or empty {@link String} value.
+     * Internal constructor for {@code BooleanValue} that permits a {@code null}
+     * or empty {@link Boolean} value.
      *
      * <p>This should only be used internally by subclasses, in order to
      * construct {@code EMPTY} sentinel values.</p>
@@ -60,7 +59,7 @@ implements IifExportable, Comparable<StringValue> {
      * @param   value
      *          The value to wrap.
      */
-    protected StringValue(String value, boolean isEmptyOkay) {
+    protected BooleanValue(Boolean value, boolean isEmptyOkay) {
         super(value, isEmptyOkay);
     }
 
@@ -73,34 +72,35 @@ implements IifExportable, Comparable<StringValue> {
      */
     @Override
     public String toIifString() {
-        return IifUtils.escapeColumn(this.getValue());
-    }
+        String  result;
+        Boolean value = this.getValue();
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>Two {@code StringValue} instances are compared based on the values
-     * they wrap, such that they are sorted alphabetically.</p>
-     */
-    @Override
-    public int compareTo(final StringValue other) {
-        int result;
-
-        if (this.equals(other)) {
-            result = 0;
+        if (value == null) {
+            result = "";
         }
-        else if (other == null) {
-            result = -1;
+        else if (value) {
+            result = "Y";
         }
         else {
-            result = this.getValue().compareTo(other.getValue());
+            result = "N";
         }
 
         return result;
     }
 
     @Override
-    protected boolean isValueEmpty(final String value) {
-        return value.isEmpty();
+    protected boolean isValueEmpty(final Boolean value) {
+        return (value == null);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Booleans allow a sentinel value of {@code null}.</p>
+     */
+    @Override
+    protected boolean isSentinelNullOkay() {
+        return true;
+    }
+
 }

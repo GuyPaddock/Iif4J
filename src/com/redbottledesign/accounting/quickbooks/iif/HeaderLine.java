@@ -85,8 +85,8 @@ implements IifExportable {
          * transaction.
          */
         TRANSACTION(new String[] {
-            "!TRNS",  "DOCNUM",  "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS",
-            "AMOUNT", "PAYMETH", "MEMO" }),
+            "!TRNS",  "DOCNUM",  "TRNSID",  "TRNSTYPE", "DATE",  "ACCNT", "NAME", "CLASS",
+            "AMOUNT", "PAYMETH", "TOPRINT", "DUEDATE",  "TERMS", "MEMO" }),
 
         /**
          * Header line that describes the schema for split rows inside a

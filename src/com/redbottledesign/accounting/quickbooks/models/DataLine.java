@@ -342,21 +342,6 @@ implements IifExportable, Cloneable {
     public abstract String getLineType();
 
     /**
-     * Creates a shallow copy of this {@code DataLine}.
-     *
-     * @return  A new {@code DataLine}, having all of the same field values and
-     *          references as this instance.
-     */
-    @Override
-    public DataLine clone() {
-        try {
-            return (DataLine)super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    /**
      * {@inheritDoc}
      *
      * <p>All of the columns of this line are exported into a tab-separated IIF
@@ -380,5 +365,20 @@ implements IifExportable, Cloneable {
         };
 
         return IifUtils.exportToString(new String[] { this.getLineType() }, columns);
+    }
+
+    /**
+     * Creates a shallow copy of this {@code DataLine}.
+     *
+     * @return  A new {@code DataLine}, having all of the same field values and
+     *          references as this instance.
+     */
+    @Override
+    public DataLine clone() {
+        try {
+            return (DataLine)super.clone();
+        } catch (CloneNotSupportedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
