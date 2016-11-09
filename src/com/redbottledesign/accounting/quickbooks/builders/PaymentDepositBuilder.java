@@ -343,7 +343,7 @@ extends AbstractTransactionBuilder {
 
         for (DataLine line : depositLines) {
             line.setType(TRANSACTION_TYPE);
-            line.setDate(date);
+            line.setDate(this.getDate());
 
             transaction.addLine(line);
         }
