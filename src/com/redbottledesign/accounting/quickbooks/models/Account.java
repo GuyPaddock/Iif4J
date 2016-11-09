@@ -24,6 +24,18 @@ package com.redbottledesign.accounting.quickbooks.models;
 public class Account
 extends StringValue {
     /**
+     * The account that represents customer accounts in QuickBooks that owe
+     * money.
+     */
+    public static final Account ACCOUNTS_RECEIVABLE = new Account("Accounts Receivable");
+
+    /**
+     * The account that represents vendor accounts in QuickBooks that are due
+     * money.
+     */
+    public static final Account ACCOUNTS_PAYABLE = new Account("Accounts Payable");
+
+    /**
      * Constructor for {@code Account} that wraps an account having the
      * specified name.
      *

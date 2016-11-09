@@ -43,11 +43,6 @@ extends AbstractTransactionBuilder {
      */
     public static final TxnType TRANSACTION_TYPE = TxnType.PAYMENT;
 
-    /**
-     * The account that represents accounts receivable in QuickBooks.
-     */
-    public static final Account ACCOUNTS_RECEIVABLE = new Account("Accounts Receivable");
-
     private Name customer;
     private Amount amount;
     private Date date;
@@ -271,7 +266,7 @@ extends AbstractTransactionBuilder {
         // Credit from AR
         creditAmount = new Amount(amount.getValue().negate());
 
-        this.addLine(paymentLines, ACCOUNTS_RECEIVABLE, creditAmount, customer, memo);
+        this.addLine(paymentLines, Account.ACCOUNTS_RECEIVABLE, creditAmount, customer, memo);
 
         for (DataLine line : paymentLines) {
             line.setType(TRANSACTION_TYPE);
