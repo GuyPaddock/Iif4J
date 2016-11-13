@@ -49,4 +49,23 @@ implements Comparator<BigDecimal> {
     public static BigDecimal applyPrecision(BigDecimal value) {
         return value.setScale(2, RoundingMode.HALF_UP);
     }
+
+    /**
+     * Compares two {@link BigDecimal} values for equality, treating both as
+     * monetary values.
+     *
+     * @param   first
+     *          The first monetary value.
+     *
+     * @param   second
+     *          The second monetary value.
+     *
+     * @return  Whether or not the two values are equal when compared as
+     *          monetary values.
+     */
+    public static boolean areAmountsEqual(final BigDecimal first, final BigDecimal second) {
+        final MoneyComparator comparator = new MoneyComparator();
+
+        return (comparator.compare(first, second) == 0);
+    }
 }
