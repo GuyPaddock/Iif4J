@@ -52,6 +52,15 @@ extends AbstractTransactionBuilder {
     private Account depositTo;
 
     /**
+     * Gets the customer from which the payment is being received.
+     *
+     * @return  The customer.
+     */
+    public Name getCustomer() {
+        return this.customer;
+    }
+
+    /**
      * Sets the customer from which the payment is being received.
      *
      * @param   customer
@@ -63,6 +72,15 @@ extends AbstractTransactionBuilder {
         this.customer = customer;
 
         return this;
+    }
+
+    /**
+     * Gets the amount of the payment.
+     *
+     * @return  The payment amount.
+     */
+    public Amount getAmount() {
+        return this.amount;
     }
 
     /**
@@ -84,6 +102,15 @@ extends AbstractTransactionBuilder {
     }
 
     /**
+     * Gets the effective date of the payment.
+     *
+     * @return  The date.
+     */
+    public Date getDate() {
+        return this.date;
+    }
+
+    /**
      * Sets the effective date of the payment.
      *
      * <p>This populates the date of the IIF transaction.</p>
@@ -100,6 +127,15 @@ extends AbstractTransactionBuilder {
     }
 
     /**
+     * Gets the method by which the payment was made.
+     *
+     * @return  The payment method.
+     */
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    /**
      * Sets the method by which the payment was made.
      *
      * @param   paymentMethod
@@ -111,6 +147,15 @@ extends AbstractTransactionBuilder {
         this.paymentMethod = paymentMethod;
 
         return this;
+    }
+
+    /**
+     * Gets the unique reference # for this payment.
+     *
+     * @return  The reference #.
+     */
+    public DocNumber getReferenceNumber() {
+        return this.referenceNumber;
     }
 
     /**
@@ -130,6 +175,15 @@ extends AbstractTransactionBuilder {
     }
 
     /**
+     * Gets the miscellaneous note on the payment.
+     *
+     * @return  The memo.
+     */
+    public Memo getMemo() {
+        return this.memo;
+    }
+
+    /**
      * Sets a miscellaneous note on the payment.
      *
      * @param   memo
@@ -141,6 +195,15 @@ extends AbstractTransactionBuilder {
         this.memo = memo;
 
         return this;
+    }
+
+    /**
+     * Gets the account into which the payment will be deposited.
+     *
+     * @return  The deposit account.
+     */
+    public Account getDepositTo() {
+        return this.depositTo;
     }
 
     /**
@@ -156,69 +219,6 @@ extends AbstractTransactionBuilder {
         this.depositTo = depositTo;
 
         return this;
-    }
-
-    /**
-     * Gets the customer from which the payment is being received.
-     *
-     * @return  The customer.
-     */
-    public Name getCustomer() {
-        return this.customer;
-    }
-
-    /**
-     * Gets the amount of the payment.
-     *
-     * @return  The payment amount.
-     */
-    public Amount getAmount() {
-        return this.amount;
-    }
-
-    /**
-     * Gets the effective date of the payment.
-     *
-     * @return  The date.
-     */
-    public Date getDate() {
-        return this.date;
-    }
-
-    /**
-     * Gets the method by which the payment was made.
-     *
-     * @return  The payment method.
-     */
-    public PaymentMethod getPaymentMethod() {
-        return this.paymentMethod;
-    }
-
-    /**
-     * Gets the unique reference # for this payment.
-     *
-     * @return  The reference #.
-     */
-    public DocNumber getReferenceNumber() {
-        return this.referenceNumber;
-    }
-
-    /**
-     * Gets the miscellaneous note on the payment.
-     *
-     * @return  The memo.
-     */
-    public Memo getMemo() {
-        return this.memo;
-    }
-
-    /**
-     * Gets the account into which the payment will be deposited.
-     *
-     * @return  The deposit account.
-     */
-    public Account getDepositTo() {
-        return this.depositTo;
     }
 
     /**

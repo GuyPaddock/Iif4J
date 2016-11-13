@@ -90,15 +90,6 @@ extends AbstractTransactionBuilder {
     }
 
     /**
-     * Gets the transaction lines that have been created for the transaction.
-     *
-     * @return The list of transaction lines.
-     */
-    protected List<DataLine> getJournalLines() {
-        return this.journalLines;
-    }
-
-    /**
      * Sets the unique entry number for the journal entry.
      *
      * <p>This populates the document number of the IIF transaction.</p>
@@ -112,6 +103,15 @@ extends AbstractTransactionBuilder {
         this.entryNumber = entryNumber;
 
         return this;
+    }
+
+    /**
+     * Gets the transaction lines that have been created for the transaction.
+     *
+     * @return The list of transaction lines.
+     */
+    protected List<DataLine> getJournalLines() {
+        return this.journalLines;
     }
 
     /**
