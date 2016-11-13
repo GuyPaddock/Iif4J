@@ -20,6 +20,7 @@ import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
 import java.util.EnumSet;
+import java.util.function.Supplier;
 
 /**
  * A data line that represents the first line of a {@link Transaction}.
@@ -201,7 +202,23 @@ extends DataLine {
      */
     @Override
     public String toIifString() {
-        IifExportable[] columns = new IifExportable[] {
+        final IifExportable[]   columns;
+        final IifExportable     dueDate,
+                                terms;
+
+        dueDate =
+            this.conditionalDefault(
+                this::getDueDate,
+                () -> !this.isReceivable(),
+                StringValue.EMPTY);
+
+        terms =
+            this.conditionalDefault(
+                this::getTerms,
+                () -> !this.isReceivable(),
+                StringValue.EMPTY);
+
+        columns = new IifExportable[] {
             this.getDocNumber(),        // 1
             this.getId(),               // 2
             this.getType(),             // 3
@@ -212,12 +229,45 @@ extends DataLine {
             this.getAmount(),           // 8
             this.getPaymentMethod(),    // 9
             this.needsToBePrinted(),    // 10
-            this.getDueDate(),          // 11
-            this.getTerms(),            // 12
+            dueDate,                    // 11
+            terms,                      // 12
             this.getMemo(),             // 13
         };
 
         return IifUtils.exportToString(new String[] { this.getLineType() }, columns);
+    }
+
+    /**
+     * Attempts to get a value from the given getter, providing a default
+     * value only if the field can be defaulted.
+     *
+     * <p>This is only used to provide default values for optional fields, or
+     * fields that don't apply to a given transaction type.</p>
+     *
+     * @param   getter
+     *          The getter to invoke to attempt to obtain the value.
+     *
+     * @param   defaultable
+     *          Whether or not a default value should be provided if the field
+     *          has no value.
+     *
+     * @param   defaultValue
+     *          The default value to supply if the field is not set and it
+     *          can be defaulted.
+     *
+     * @return  Either the underlying value; the default value; or,
+     *          {@code null} if the value is unset and cannot be defaulted.
+     */
+    protected IifExportable conditionalDefault(final Supplier<IifExportable> getter,
+                                               final Supplier<Boolean> defaultable,
+                                               final IifExportable defaultValue) {
+        IifExportable value = getter.get();
+
+        if ((value == null) && defaultable.get()) {
+            value = defaultValue;
+        }
+
+        return value;
     }
 
     /**
