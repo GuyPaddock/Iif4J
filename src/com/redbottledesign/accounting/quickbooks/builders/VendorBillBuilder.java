@@ -18,6 +18,7 @@ package com.redbottledesign.accounting.quickbooks.builders;
 
 import com.redbottledesign.accounting.quickbooks.models.Account;
 import com.redbottledesign.accounting.quickbooks.models.Amount;
+import com.redbottledesign.accounting.quickbooks.models.BooleanValue;
 import com.redbottledesign.accounting.quickbooks.models.DataLine;
 import com.redbottledesign.accounting.quickbooks.models.Date;
 import com.redbottledesign.accounting.quickbooks.models.DocNumber;
@@ -373,6 +374,7 @@ public class VendorBillBuilder {
 
         line.setType(TxnType.BILL);
         line.setAccount(Account.ACCOUNTS_PAYABLE);
+        line.setNeedsToBePrinted(BooleanValue.FALSE);
 
         return line;
     }

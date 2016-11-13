@@ -18,6 +18,7 @@ package com.redbottledesign.accounting.quickbooks.models;
 
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
+import com.redbottledesign.util.Argument;
 
 import java.util.EnumSet;
 import java.util.function.Supplier;
@@ -31,6 +32,7 @@ public class TransactionLine
 extends DataLine {
     private static final EnumSet<TxnType> PRINTABLE_TYPES =
         EnumSet.of(
+            TxnType.BILL,
             TxnType.CHECK,
             TxnType.INVOICE,
             TxnType.CREDIT_MEMO,
@@ -54,9 +56,12 @@ extends DataLine {
      */
     @Override
     public void setType(final TxnType type) {
-        if ((this.needsToBePrinted() != BooleanValue.EMPTY) ||
-            (this.getDueDate()       != null) ||
-            (this.getTerms()         != null)) {
+        Argument.ensureNotNull(type, "type");
+
+        if (!type.equals(this.getType()) &&
+            ((this.needsToBePrinted() != BooleanValue.EMPTY) ||
+             (this.getDueDate()       != null) ||
+             (this.getTerms()         != null))) {
             throw new IllegalStateException(
                 "The transaction type cannot be changed when type-specific fields are populated.");
         }
@@ -66,7 +71,8 @@ extends DataLine {
 
     /**
      * Indicates whether a check, invoice, credit memo, or sales receipt has
-     * been marked as "To be printed."
+     * been marked as "To be printed." or whether a vendor bill has been
+     * received.
      *
      * <p>This value must be {@link BooleanValue#EMPTY} for all other types of
      * transactions.</p>
@@ -86,7 +92,7 @@ extends DataLine {
 
     /**
      * Gets whether a check, invoice, credit memo, or sales receipt has been
-     * marked as "To be printed."
+     * marked as "To be printed." or whether a vendor bill has been received.
      *
      * @return  {@link BooleanValue#TRUE} if it needs to be printed;
      *          or, {@link BooleanValue#FALSE} otherwise.
@@ -107,8 +113,8 @@ extends DataLine {
     /**
      * Sets whether or not this transaction should be marked as "To be printed."
      *
-     * <p>This can only be set for a check, invoice, credit memo, or sales
-     * receipt transaction.</p>
+     * <p>This can only be set for a vendor bill, check, invoice, credit memo,
+     * or sales receipt transaction.</p>
      *
      * @param   needsToBePrinted
      *          The new value for whether or not this needs to be printed.
@@ -116,9 +122,10 @@ extends DataLine {
     public void setNeedsToBePrinted(final BooleanValue needsToBePrinted) {
         if (!this.isPrintable()) {
             throw new IllegalArgumentException(
-                "Whether or not a transaction needs printing can only be set " +
-                "on a check, invoice, credit memo, or sales receipt " +
-                "transaction.");
+                String.format(
+                    "Whether or not a transaction needs printing can only be set on a check, " +
+                    "invoice, credit memo, or sales receipt transaction (currently the type is " +
+                    "`%s`).", this.getType()));
         }
 
         this.needsToBePrinted = needsToBePrinted;
