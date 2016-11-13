@@ -187,6 +187,17 @@ public class VendorBillBuilder {
     }
 
     /**
+     * Gets the total amount of all line items added on this builder.
+     *
+     * <p>This amount is equal to the amount in the first transaction line.</p>
+     *
+     * @return  The line item total amount.
+     */
+    public BigDecimal getLineItemTotal() {
+        return this.lineItemTotal;
+    }
+
+    /**
      * Gets the first line of the transaction.
      *
      * @return  The transaction line.
@@ -230,17 +241,6 @@ public class VendorBillBuilder {
         this.splitLines = new LinkedList<>(splitLines);
 
         return this;
-    }
-
-    /**
-     * Gets the total amount of all line items added on this builder.
-     *
-     * <p>This amount is equal to the amount in the first transaction line.</p>
-     *
-     * @return  The line item total amount.
-     */
-    protected BigDecimal getLineItemTotal() {
-        return this.lineItemTotal;
     }
 
     /**
@@ -292,7 +292,7 @@ public class VendorBillBuilder {
 
         paymentSplit.setType(TRANSACTION_TYPE);
         paymentSplit.setAccount(account);
-        paymentSplit.setAmount(new Amount(amount.getValue()));
+        paymentSplit.setAmount(amount);
         paymentSplit.setName(customerOrJob);
         paymentSplit.setMemo(memo);
         paymentSplit.setTxnClass(txnClass);
