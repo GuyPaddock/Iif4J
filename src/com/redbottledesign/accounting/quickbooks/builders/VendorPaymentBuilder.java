@@ -21,6 +21,7 @@ import com.redbottledesign.accounting.quickbooks.models.Amount;
 import com.redbottledesign.accounting.quickbooks.models.BooleanValue;
 import com.redbottledesign.accounting.quickbooks.models.DataLine;
 import com.redbottledesign.accounting.quickbooks.models.Date;
+import com.redbottledesign.accounting.quickbooks.models.DocNumber;
 import com.redbottledesign.accounting.quickbooks.models.Memo;
 import com.redbottledesign.accounting.quickbooks.models.Name;
 import com.redbottledesign.accounting.quickbooks.models.Transaction;
@@ -34,10 +35,14 @@ import java.util.List;
 /**
  * A builder for check payments toward Vendor Bills.
  *
- * <p><strong>NOTE:</strong> There is currently no way to associate the bill
- * payment with the original bill. Vendor bill payments have to be imported as
- * checks written against Accounts Payable to a Vendor. This is a limitation of
- * QuickBooks 2006 and later for which there is no known workaround.</p>
+ * <p><strong>NOTE:</strong> There is currently no way to automatically
+ * associate the bill payment with the original bill. Vendor bill payments have
+ * to be imported as checks written against Accounts Payable to a Vendor. This
+ * is a limitation of QuickBooks 2006 and later for which there is no known
+ * workaround.</p>
+ *
+ * <p>Use "Pay Bills" within QuickBooks to associate the payments as "Credits"
+ * against the outstanding bills.</p>
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
@@ -50,6 +55,7 @@ extends AbstractTransactionBuilder {
 
     private Name vendor;
     private Amount amount;
+    private DocNumber referenceNumber;
     private Date date;
     private Account chargeToAccount;
     private Memo memo;
@@ -58,6 +64,7 @@ extends AbstractTransactionBuilder {
      * Constructor for {@code VendorPaymentBuilder}.
      */
     public VendorPaymentBuilder() {
+        this.setReferenceNumber(DocNumber.EMPTY);
         this.setMemo(Memo.EMPTY);
     }
 
@@ -107,6 +114,31 @@ extends AbstractTransactionBuilder {
         }
 
         this.amount = amount;
+
+        return this;
+    }
+
+    /**
+     * Gets the unique reference # for the bill payment.
+     *
+     * @return  The reference #.
+     */
+    public DocNumber getReferenceNumber() {
+        return this.referenceNumber;
+    }
+
+    /**
+     * Sets the unique reference # for the bill payment.
+     *
+     * <p>This populates the document number of the IIF transaction.</p>
+     *
+     * @param   referenceNumber
+     *          The reference # to set in the transaction being built.
+     *
+     * @return  This object, for chaining.
+     */
+    public VendorPaymentBuilder setReferenceNumber(final DocNumber referenceNumber) {
+        this.referenceNumber = referenceNumber;
 
         return this;
     }
@@ -206,15 +238,17 @@ extends AbstractTransactionBuilder {
         final Transaction       transaction     = new Transaction();
         final List<DataLine>    paymentLines    = new LinkedList<>();
         final Name              vendor          = this.getVendor();
-        final Memo              memo            = this.getMemo();
         final Amount            debitAmount     = this.getAmount(),
                                 creditAmount    = new Amount(debitAmount.getValue().negate());
+        final DocNumber         refNumber       = this.getReferenceNumber();
         final Date              date            = this.getDate();
         final Account           chargeTo        = this.getChargeToAccount();
+        final Memo              memo            = this.getMemo();
         final TransactionLine   txnLine;
 
         Argument.ensureNotNull(vendor,      "customer");
         Argument.ensureNotNull(debitAmount, "debitAmount");
+        Argument.ensureNotNull(refNumber,   "refNumber");
         Argument.ensureNotNull(date,        "date");
         Argument.ensureNotNull(chargeTo,    "chargeTo");
         Argument.ensureNotNull(memo,        "memo");
@@ -225,7 +259,13 @@ extends AbstractTransactionBuilder {
                 paymentLines, chargeTo, creditAmount, vendor, Memo.EMPTY);
 
         txnLine.setType(TRANSACTION_TYPE);
-        txnLine.setNeedsToBePrinted(BooleanValue.TRUE);
+
+        if (refNumber.getValue().isEmpty()) {
+            txnLine.setNeedsToBePrinted(BooleanValue.TRUE);
+        }
+        else {
+            txnLine.setNeedsToBePrinted(BooleanValue.FALSE);
+        }
 
         // Debit to Accounts Payable for the Vendor
         this.addLine(paymentLines, Account.ACCOUNTS_PAYABLE, debitAmount, vendor, Memo.EMPTY);
@@ -233,6 +273,7 @@ extends AbstractTransactionBuilder {
         for (DataLine line : paymentLines) {
             line.setType(TRANSACTION_TYPE);
             line.setDate(date);
+            line.setDocNumber(refNumber);
             line.setMemo(memo);
 
             transaction.addLine(line);
