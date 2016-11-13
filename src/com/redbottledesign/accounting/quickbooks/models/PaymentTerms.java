@@ -15,7 +15,7 @@ extends StringValue {
     /**
      * Payment due upon receipt.
      */
-    public static final PaymentTerms ON_RECEIPT = new PaymentTerms("Due on receipt");
+    public static final PaymentTerms UPON_RECEIPT = new PaymentTerms("Due on receipt");
 
     /**
      * 7 day terms.
