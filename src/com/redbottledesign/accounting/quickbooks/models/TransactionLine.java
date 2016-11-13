@@ -53,7 +53,7 @@ extends DataLine {
      */
     @Override
     public void setType(final TxnType type) {
-        if ((this.needsToBePrinted() != null) ||
+        if ((this.needsToBePrinted() != BooleanValue.EMPTY) ||
             (this.getDueDate()       != null) ||
             (this.getTerms()         != null)) {
             throw new IllegalStateException(
@@ -87,11 +87,20 @@ extends DataLine {
      * Gets whether a check, invoice, credit memo, or sales receipt has been
      * marked as "To be printed."
      *
-     * @return  {@code true} if it needs to be printed;
-     *          or, {@code false} otherwise.
+     * @return  {@link BooleanValue#TRUE} if it needs to be printed;
+     *          or, {@link BooleanValue#FALSE} otherwise.
      */
     public BooleanValue needsToBePrinted() {
-        return this.needsToBePrinted;
+        final BooleanValue result;
+
+        if (this.needsToBePrinted != null) {
+            result = this.needsToBePrinted;
+        }
+        else {
+            result = BooleanValue.EMPTY;
+        }
+
+        return result;
     }
 
     /**
@@ -126,7 +135,7 @@ extends DataLine {
     /**
      * Sets the payment terms for an invoice.
      *
-     * <p>This can only be set for an invoice transaction.</p>
+     * <p>This can only be set for an invoice or bill transaction.</p>
      *
      * @param   terms
      *          The new terms for the invoice.
@@ -135,9 +144,9 @@ extends DataLine {
      *          If called on anything other than an invoice transaction.
      */
     public void setTerms(final PaymentTerms terms) {
-        if (this.getType() != TxnType.INVOICE) {
+        if (!this.isReceivable()) {
             throw new IllegalArgumentException(
-                "Payment terms can only be set on an invoice transaction.");
+                "Payment terms can only be set on an invoice or bill transaction.");
         }
 
         this.terms = terms;
@@ -193,19 +202,19 @@ extends DataLine {
     @Override
     public String toIifString() {
         IifExportable[] columns = new IifExportable[] {
-            this.getDocNumber(),
-            this.getId(),
-            this.getType(),
-            this.getDate(),
-            this.getAccount(),
-            this.getName(),
-            this.getTxnClass(),
-            this.getAmount(),
-            this.getPaymentMethod(),
-            this.needsToBePrinted(),
-            this.getDueDate(),
-            this.getTerms(),
-            this.getMemo(),
+            this.getDocNumber(),        // 1
+            this.getId(),               // 2
+            this.getType(),             // 3
+            this.getDate(),             // 4
+            this.getAccount(),          // 5
+            this.getName(),             // 6
+            this.getTxnClass(),         // 7
+            this.getAmount(),           // 8
+            this.getPaymentMethod(),    // 9
+            this.needsToBePrinted(),    // 10
+            this.getDueDate(),          // 11
+            this.getTerms(),            // 12
+            this.getMemo(),             // 13
         };
 
         return IifUtils.exportToString(new String[] { this.getLineType() }, columns);

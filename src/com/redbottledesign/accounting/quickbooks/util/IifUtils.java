@@ -123,8 +123,9 @@ public class IifUtils {
                 throw new IllegalArgumentException(
                     String.format(
                         "Not all required IIF columns contain a value (`null` "+
-                        "was encountered in column `%d`). All required " +
-                        "columns must have a value.", (columnIndex + 1)));
+                        "was encountered at one-based column index `%d`). " +
+                        "All required columns must have a value.",
+                        (columnIndex + 1)));
             }
 
             line.add(column.toIifString());
