@@ -35,13 +35,23 @@ implements IifExportable {
     public static final BooleanValue EMPTY = new BooleanValue(null, true);
 
     /**
+     * A {@code BooleanValue} that represents true values.
+     */
+    public static final BooleanValue TRUE = new BooleanValue(true, true);
+
+    /**
+     * A {@code BooleanValue} that represents false values.
+     */
+    public static final BooleanValue FALSE = new BooleanValue(false, true);
+
+    /**
      * Constructor for {@code BooleanValue} that populates the new instance from
      * the provided {@link Boolean}.
      *
      * @param   value
      *          The value to wrap.
      */
-    public BooleanValue(Boolean value) {
+    protected BooleanValue(Boolean value) {
         super(value, false);
     }
 
