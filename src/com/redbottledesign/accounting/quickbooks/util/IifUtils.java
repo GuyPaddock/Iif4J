@@ -17,8 +17,12 @@
 package com.redbottledesign.accounting.quickbooks.util;
 
 import com.redbottledesign.accounting.quickbooks.iif.IifExportable;
+import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import com.redbottledesign.util.Argument;
 
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -188,5 +192,65 @@ public class IifUtils {
      */
     public static String joinLines(Iterable<String> lines) {
         return String.join("\n", lines);
+    }
+
+    /**
+     * Prints a summary of the given transaction out to the given output stream.
+     *
+     * <p>The summary renders:</p>
+     * <ul>
+     *   <li>A human-readable report of the lines in the transaction.</li>
+     *   <li>How many lines are in the transaction.</li>
+     *   <li>Whether the transaction is in balance.</li>
+     *   <li>How much of a discrepancy there is between credits and debits.</li>
+     *   <li>The total amount of credits.</li>
+     *   <li>The total amount of debits.</li>
+     * </ul>
+     *
+     * <p>The given stream is flushed, but not closed, by this method.</p>
+     *
+     * @param   transaction
+     *          The IIF transaction to summarize.
+     *
+     * @param   output
+     *          The stream to which the transaction will be written.
+     */
+    public static void printSummary(Transaction transaction, OutputStream output) {
+        printSummary(transaction, new PrintWriter(output));
+    }
+
+    /**
+     * Prints a summary of the given transaction out to the given writer.
+     *
+     * <p>The summary renders:</p>
+     * <ul>
+     *   <li>A human-readable report of the lines in the transaction.</li>
+     *   <li>How many lines are in the transaction.</li>
+     *   <li>Whether the transaction is in balance.</li>
+     *   <li>How much of a discrepancy there is between credits and debits.</li>
+     *   <li>The total amount of credits.</li>
+     *   <li>The total amount of debits.</li>
+     * </ul>
+     *
+     * <p>The given writer is flushed, but not closed, by this method.</p>
+     *
+     * @param   transaction
+     *          The IIF transaction to summarize.
+     *
+     * @param   output
+     *          The writer to which the transaction will be written.
+     */
+    public static void printSummary(Transaction transaction, Writer output) {
+        PrintWriter printWriter = new PrintWriter(output);
+
+        printWriter.println(transaction.asHumanReadableReport());
+        printWriter.printf("%-16s %s\n", "Lines:",       transaction.getLines().size());
+        printWriter.printf("%-16s %s\n", "In balance?:", transaction.isInBalance());
+        printWriter.printf("%-16s %s\n", "Discrepancy:", transaction.calculateBalanceDiscrepancy());
+        printWriter.printf("%-16s %s\n", "Debits:",      transaction.calculateDebitTotal());
+        printWriter.printf("%-16s %s\n", "Credits:",     transaction.calculateCreditTotal());
+        printWriter.println("----");
+        printWriter.println();
+        printWriter.flush();
     }
 }

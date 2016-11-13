@@ -26,6 +26,7 @@ import com.redbottledesign.accounting.quickbooks.models.Memo;
 import com.redbottledesign.accounting.quickbooks.models.Name;
 import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import com.redbottledesign.accounting.quickbooks.models.TxnClass;
+import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
 import java.time.LocalDate;
 
@@ -51,7 +52,7 @@ public class GeneralJournalExample {
             .setEntryNumber(new DocNumber("INV-893"));
 
         transaction = builder.build(false);
-        printSummary(transaction);
+        IifUtils.printSummary(transaction, System.out);
 
         builder.addLine(
                 rbdAr,
@@ -61,7 +62,7 @@ public class GeneralJournalExample {
                 TxnClass.EMPTY);
 
         transaction = builder.build(false);
-        printSummary(transaction);
+        IifUtils.printSummary(transaction, System.out);
 
         builder.addLine(
             rbdSalesCons,
@@ -73,7 +74,7 @@ public class GeneralJournalExample {
             bobClass);
 
         transaction = builder.build(false);
-        printSummary(transaction);
+        IifUtils.printSummary(transaction, System.out);
 
         builder.addLine(
             rbdSalesCons,
@@ -85,28 +86,11 @@ public class GeneralJournalExample {
             jimClass);
 
         transaction = builder.build(false);
-        printSummary(transaction);
+        IifUtils.printSummary(transaction, System.out);
 
         file.addTransaction(transaction);
         file.addCustomerName(contoso);
 
         System.out.println(file.toIifString());
-    }
-
-    /**
-     * Prints a simple summary of the state of the transaction, for debugging
-     * purposes.
-     *
-     * @param   transaction
-     *          The transaction being summarized.
-     */
-    protected static void printSummary(Transaction transaction) {
-        System.out.println(transaction.asHumanReadableReport());
-        System.out.println("Lines: "       + transaction.getLines().size());
-        System.out.println("In balance? "  + transaction.isInBalance());
-        System.out.println("Discrepancy: " + transaction.calculateBalanceDiscrepancy());
-        System.out.println("Debits: "      + transaction.calculateDebitTotal());
-        System.out.println("Credits: "     + transaction.calculateCreditTotal());
-        System.out.println();
     }
 }
