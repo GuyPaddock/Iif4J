@@ -31,6 +31,7 @@ import com.redbottledesign.accounting.quickbooks.models.TxnType;
 import com.redbottledesign.util.Argument;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,8 +61,8 @@ extends AbstractTransactionBuilder {
      * Constructor for {@code PaymentDepositBuilder}.
      */
     public PaymentDepositBuilder() {
-        this.paymentTotal = BigDecimal.ZERO;
-        this.paymentLines = new LinkedList<>();
+        this.setPaymentTotal(BigDecimal.ZERO);
+        this.setPaymentLines(Collections.emptyList());
     }
 
     /**
@@ -240,6 +241,28 @@ extends AbstractTransactionBuilder {
      */
     public BigDecimal getPaymentTotal() {
         return this.paymentTotal;
+    }
+
+    /**
+     * Sets the payment lines that have been created for the transaction.
+     *
+     * <p>The contents of the provided list are copied into a new list.</p>
+     *
+     * @param   paymentLines
+     *          The new list of payment split lines in the deposit.
+     */
+    public void setPaymentLines(final List<SplitLine> paymentLines) {
+        this.paymentLines = new LinkedList<>(paymentLines);
+    }
+
+    /**
+     * Sets the total amount of all payments added on this builder.
+     *
+     * @param   paymentTotal
+     *          The new payment total.
+     */
+    protected void setPaymentTotal(final BigDecimal paymentTotal) {
+        this.paymentTotal = paymentTotal;
     }
 
     /**
