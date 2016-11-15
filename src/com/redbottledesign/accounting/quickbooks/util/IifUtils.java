@@ -253,4 +253,23 @@ public class IifUtils {
         printWriter.println();
         printWriter.flush();
     }
+
+    /**
+     * Shortens the given {@link String} to no longer than the given length.
+     *
+     * <p>If the string is already shorter than the given length, it is not
+     * modified.</p>
+     *
+     * @param   value
+     *          The value to shorten.
+     *
+     * @param   maxLength
+     *          The maximum length for the resulting string.
+     *
+     * @return  The shortened string, which is no longer than {@code maxLength},
+     *          but that may be shorter if the original value was shorter.
+     */
+    public static String shortenTo(final String value, final int maxLength) {
+        return value.substring(0, Math.min(value.length(), maxLength));
+    }
 }
