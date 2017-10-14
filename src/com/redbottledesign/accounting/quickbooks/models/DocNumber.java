@@ -19,17 +19,36 @@ package com.redbottledesign.accounting.quickbooks.models;
 /**
  * The unique identifier for this document number.
  *
- * <p>If not specified, QuickBooks will automatically assign the document
- * number.</p>
+ * <p>If not specified, QuickBooks will automatically assign the document number.</p>
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
 public class DocNumber
 extends StringValue {
+    public static final int MAX_LENGTH = 15;
+
     /**
      * The value to use when a {@link DocNumber} is not being provided.
      */
     public static final DocNumber EMPTY = new DocNumber();
+
+    /**
+     * Trims the length of a string to fit within the maximum allowed by QB (15 chars).
+     *
+     * If the string is already no longer than 15 character, this has no effect.
+     *
+     * @param   docNumber
+     *          The document number string to trim to be no more than 15 characters.
+     *
+     * @return  The trimmed document number string.
+     */
+    public static String trimToMaxLength(String docNumber) {
+        if (docNumber.length() > MAX_LENGTH) {
+            docNumber = docNumber.substring(0, MAX_LENGTH);
+        }
+
+        return docNumber;
+    }
 
     /**
      * Constructor for a {@code DocNumber} to wrap the specified name.
@@ -60,10 +79,12 @@ extends StringValue {
     @Override
     protected void setValue(final String value)
     throws IllegalArgumentException {
-        if (value.length() > 15) {
+        if (value.length() > DocNumber.MAX_LENGTH) {
             throw new IllegalArgumentException(
                 String.format(
-                    "Value cannot be longer than 15 characters (was given `%s`).", value));
+                    "Value cannot be longer than %d characters (was given `%s`).",
+                    DocNumber.MAX_LENGTH,
+                    value));
         }
 
         super.setValue(value);
