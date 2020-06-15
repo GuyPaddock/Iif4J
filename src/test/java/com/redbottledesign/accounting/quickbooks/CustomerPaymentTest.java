@@ -69,7 +69,7 @@ public class CustomerPaymentTest {
 	File expected = new File("src/test/resources/CustomerPayment.iif");
         File temp = File.createTempFile("temp", null);
         FileUtils.writeStringToFile(temp, file.toIifString());
-        Assert.assertEquals("The files differ!", FileUtils.readFileToString(expected, "utf-8"), FileUtils.readFileToString(temp, "utf-8"));
+        Assert.assertEquals("The CustomerPayment file differs!", FileUtils.readFileToString(expected, "utf-8"), FileUtils.readFileToString(temp, "utf-8"));
         temp.deleteOnExit();
     }
 }

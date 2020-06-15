@@ -9,5 +9,5 @@ editions.
 
 
 ## Getting Started
-Check out `src/com/redbottledesign/accounting/quickbooks/examples` for some practical examples of
+Check out `src/test/java/com/redbottledesign/accounting/quickbooks` for some practical examples of
 using this library.

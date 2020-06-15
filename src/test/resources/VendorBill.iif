@@ -1,0 +1,12 @@
+!CUST	NAME
+CUST	"Carl"
+CUST	"Lenny"
+!VEND	NAME
+VEND	"Contoso, Inc."
+!TRNS	DOCNUM	TRNSID	TRNSTYPE	DATE	ACCNT	NAME	CLASS	AMOUNT	PAYMETH	TOPRINT	DUEDATE	TERMS	MEMO
+!SPL	DOCNUM	SPLID	TRNSTYPE	DATE	ACCNT	NAME	CLASS	AMOUNT	PAYMETH	MEMO
+!ENDTRNS	
+TRNS	"8675309"	""	"BILL"	"1/6/2014"	"Accounts Payable"	"Contoso, Inc."	""	-325.00	""	N	"2/6/2014"	"Net 30"	"Thank you for your business!"
+SPL	"8675309"	""	"BILL"	"1/6/2014"	"Widget Expense"	"Lenny"	"Reimbursable"	250.00	""	"Widget 1"
+SPL	"8675309"	""	"BILL"	"1/6/2014"	"Widget Expense"	"Carl"	"Reimbursable"	75.00	""	"Widget 2"
+ENDTRNS	
