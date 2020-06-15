@@ -28,7 +28,12 @@ import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import com.redbottledesign.accounting.quickbooks.models.TxnClass;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
+import java.io.File;
 import java.time.LocalDate;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * An example of building a general journal entry containing three lines and
@@ -36,8 +41,10 @@ import java.time.LocalDate;
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class GeneralJournalExample {
-    public static void main(String[] args) {
+public class GeneralJournalTest {
+
+    @Test
+    public void main() throws Exception {
         IifFile                 file         = new IifFile();
         Transaction             transaction;
         GeneralJournalBuilder   builder      = new GeneralJournalBuilder();
@@ -91,6 +98,10 @@ public class GeneralJournalExample {
         file.addTransaction(transaction);
         file.addCustomerName(contoso);
 
-        System.out.println(file.toIifString());
+        File expected = new File("src/test/resources/GeneralJournal.iif");
+        File temp = File.createTempFile("temp", null);
+        FileUtils.writeStringToFile(temp, file.toIifString());
+        Assert.assertEquals("The GeneralJournal file differs!", FileUtils.readFileToString(expected, "utf-8"), FileUtils.readFileToString(temp, "utf-8"));
+        temp.deleteOnExit();
     }
 }

@@ -29,16 +29,23 @@ import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import com.redbottledesign.accounting.quickbooks.models.TxnClass;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * An example of building vendor bill and then exporting it to IIF format.
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class VendorBillExample {
-    public static void main(String[] args) {
+public class VendorBillTest {
+
+    @Test
+    public void main() throws Exception {
         IifFile                 file                = new IifFile();
         Transaction             transaction;
         VendorBillBuilder       builder             = new VendorBillBuilder();
@@ -81,6 +88,10 @@ public class VendorBillExample {
         file.addCustomerName(customerLenny);
         file.addCustomerName(customerCarl);
 
-        System.out.println(file.toIifString());
+        File expected = new File("src/test/resources/VendorBill.iif");
+        File temp = File.createTempFile("temp", null);
+        FileUtils.writeStringToFile(temp, file.toIifString());
+        Assert.assertEquals("The VendorBill file differs!", FileUtils.readFileToString(expected, "utf-8"), FileUtils.readFileToString(temp, "utf-8"));
+        temp.deleteOnExit();
     }
 }
