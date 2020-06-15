@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.redbottledesign.accounting.quickbooks.examples;
+package com.redbottledesign.accounting.quickbooks;
 
 import com.redbottledesign.accounting.quickbooks.builders.CustomerPaymentBuilder;
 import com.redbottledesign.accounting.quickbooks.iif.IifFile;
@@ -28,7 +28,12 @@ import com.redbottledesign.accounting.quickbooks.models.PaymentMethod;
 import com.redbottledesign.accounting.quickbooks.models.Transaction;
 import com.redbottledesign.accounting.quickbooks.util.IifUtils;
 
+import java.io.File;
 import java.time.LocalDate;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * An example of building a customer payment entry and then exporting it to IIF
@@ -36,8 +41,10 @@ import java.time.LocalDate;
  *
  * @author Guy Paddock (guy@redbottledesign.com)
  */
-public class CustomerPaymentExample {
-    public static void main(String[] args) {
+public class CustomerPaymentTest {
+
+    @Test
+    public void main() throws Exception {
         IifFile                 file         = new IifFile();
         Transaction             transaction;
         CustomerPaymentBuilder  builder      = new CustomerPaymentBuilder();
@@ -59,6 +66,10 @@ public class CustomerPaymentExample {
         file.addTransaction(transaction);
         file.addCustomerName(contoso);
 
-        System.out.println(file.toIifString());
+	File expected = new File("src/test/resources/CustomerPayment.iif");
+        File temp = File.createTempFile("temp", null);
+        FileUtils.writeStringToFile(temp, file.toIifString());
+        Assert.assertEquals("The files differ!", FileUtils.readFileToString(expected, "utf-8"), FileUtils.readFileToString(temp, "utf-8"));
+        temp.deleteOnExit();
     }
 }
